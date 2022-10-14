@@ -1,0 +1,27 @@
+# <img src="assets/icon.png" width="20" /> Jot
+
+## Install
+
+Clone the repo and install dependencies:
+
+```bash
+git clone https://github.com/paripsky/jot.git
+cd jot
+npm install
+```
+
+## Starting Development
+
+Start the app in the `dev` environment:
+
+```bash
+npm start
+```
+
+## Packaging for Production
+
+To package apps for the local platform:
+
+```bash
+npm run package
+```
