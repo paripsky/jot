@@ -1,1 +1,1 @@
-export default window.api.logger;
+export default window.api ? window.api.logger : console;
