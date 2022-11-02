@@ -29,6 +29,7 @@ export enum JotItemTypes {
   excalidraw = 'excalidraw',
   converter = 'converter',
   react = 'react',
+  kanban = 'kanban',
 }
 
 export const defaultJotItemType = JotItemTypes.markdown;

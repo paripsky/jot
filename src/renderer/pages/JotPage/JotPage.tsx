@@ -244,12 +244,17 @@ function JotPage() {
         flexDirection="column"
         overflow="auto"
         ref={jotItemsContainerRef}
+        pt="3"
       >
         {jot.items.map((item) => {
           const { id, type, data } = item;
+          const isEditing = editing === item;
+
           return (
             <Flex
+              position="relative"
               key={id}
+              id={id}
               justifyContent="space-between"
               p="2"
               m="2"
@@ -274,10 +279,29 @@ function JotPage() {
                   <Jot id={id} type={type} data={data} />
                 </Box>
               )}
-              <Flex flexDirection="column" ml="2" gap="2">
-                {editing === item ? (
+              <Flex
+                // flexDirection="column"
+                ml="2"
+                gap="2"
+                position={isEditing ? 'relative' : 'absolute'}
+                top={isEditing ? 'auto' : '-7'}
+                right="0"
+                // background="neutral.800"
+                p="2"
+                display={isEditing ? 'flex' : 'none'}
+                sx={
+                  !isEditing
+                    ? {
+                        [`#${id}:hover &`]: {
+                          display: 'flex',
+                        },
+                      }
+                    : undefined
+                }
+              >
+                {isEditing ? (
                   <>
-                    <Tooltip label="Save Item" placement="left" openDelay={500}>
+                    <Tooltip label="Save Item" placement="top" openDelay={500}>
                       <IconButton
                         size="xs"
                         icon={<CheckIcon />}
@@ -285,7 +309,7 @@ function JotPage() {
                         onClick={onSubmitEdit}
                       />
                     </Tooltip>
-                    <Tooltip label="Cancel" placement="left" openDelay={500}>
+                    <Tooltip label="Cancel" placement="top" openDelay={500}>
                       <IconButton
                         size="xs"
                         icon={<CloseIcon />}
@@ -296,7 +320,7 @@ function JotPage() {
                   </>
                 ) : (
                   <>
-                    <Tooltip label="Edit item" placement="left" openDelay={500}>
+                    <Tooltip label="Edit item" placement="top" openDelay={500}>
                       <IconButton
                         size="xs"
                         icon={<EditIcon />}
@@ -304,7 +328,7 @@ function JotPage() {
                         onClick={() => enterEditMode(item)}
                       />
                     </Tooltip>
-                    <Tooltip label="Copy item" placement="left" openDelay={500}>
+                    <Tooltip label="Copy item" placement="top" openDelay={500}>
                       <IconButton
                         size="xs"
                         icon={<CopyIcon />}
@@ -336,7 +360,7 @@ function JotPage() {
                     </Tooltip>
                     <Tooltip
                       label="Delete item"
-                      placement="left"
+                      placement="top"
                       openDelay={500}
                     >
                       <IconButton
@@ -412,6 +436,9 @@ function JotPage() {
             </Suspense>
           </Box>
           <Flex mt="2" justifyContent="flex-end">
+            <Text fontSize="xs" alignSelf="center" color="neutral.400">
+              Use Voice (Speech To Text)
+            </Text>
             <Text fontSize="xs" alignSelf="center" color="neutral.400">
               Ctrl + Enter
             </Text>
