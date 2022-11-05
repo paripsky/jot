@@ -276,7 +276,14 @@ function JotPage() {
                 </Suspense>
               ) : (
                 <Box w="full" onDoubleClick={() => enterEditMode(item)}>
-                  <Jot id={id} type={type} data={data} />
+                  <Jot
+                    id={id}
+                    type={type}
+                    data={data}
+                    onChange={(newData: unknown) =>
+                      editItem({ ...item, data: newData })
+                    }
+                  />
                 </Box>
               )}
               <Flex

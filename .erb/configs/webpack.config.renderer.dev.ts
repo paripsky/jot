@@ -40,7 +40,7 @@ if (
 }
 
 const configuration: webpack.Configuration = {
-  devtool: 'inline-source-map',
+  devtool: false,
 
   mode: 'development',
 
@@ -151,6 +151,11 @@ const configuration: webpack.Configuration = {
      * This fixes a webpack warning for babel standalone
      */
     new webpack.ContextReplacementPlugin(/@babel/),
+
+    new webpack.SourceMapDevToolPlugin({
+      filename: '[file].[name].[hash][ext].map',
+      exclude: 'vendors',
+    }),
   ],
 
   node: {

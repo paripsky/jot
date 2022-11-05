@@ -1,7 +1,7 @@
 import { Box, useColorMode } from '@chakra-ui/react';
 import { Excalidraw } from '@excalidraw/excalidraw';
 import { ExcalidrawElement } from '@excalidraw/excalidraw/types/element/types';
-import { JotItem, JotItemTypes } from 'renderer/context/jots';
+import { JotItem, JotItemData, JotItemTypes } from 'renderer/context/jots';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import '../../../github-markdown.css';
@@ -9,8 +9,12 @@ import CodeJot from './CodeJot';
 import ConverterJotViewer from './ConverterJotViewer';
 import { ConverterJotData } from './ConverterJotEditor';
 import ReactComponentJot from './ReactComponentJot';
+import KanbanJot from './KanbanJot';
+import TodoListJot from './TodoListJot';
 
-export type JotProps = JotItem;
+export type JotProps = JotItem & {
+  onChange: (newData: JotItemData) => void;
+};
 
 const getIframeElFromString = (xml: string) => {
   const parser = new DOMParser();
@@ -40,7 +44,7 @@ const getEmbedProps = (url: string) => {
   return { src: url };
 };
 
-const Jot: React.FC<JotProps> = ({ id, type, data }) => {
+const Jot: React.FC<JotProps> = ({ id, type, data, onChange }) => {
   const { colorMode } = useColorMode();
 
   switch (type) {
@@ -94,6 +98,10 @@ const Jot: React.FC<JotProps> = ({ id, type, data }) => {
       return <ConverterJotViewer data={data as ConverterJotData} />;
     case JotItemTypes.react:
       return <ReactComponentJot data={data as string} />;
+    case JotItemTypes.kanban:
+      return <KanbanJot data={data as string} onChange={onChange} />;
+    case JotItemTypes.todolist:
+      return <TodoListJot data={data as string} onChange={onChange} />;
     default:
       return <Box whiteSpace="pre-wrap">{data as string}</Box>;
   }

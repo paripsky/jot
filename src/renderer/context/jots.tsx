@@ -30,6 +30,7 @@ export enum JotItemTypes {
   converter = 'converter',
   react = 'react',
   kanban = 'kanban',
+  todolist = 'todolist',
 }
 
 export const defaultJotItemType = JotItemTypes.markdown;

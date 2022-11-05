@@ -91,6 +91,44 @@ const SettingsPage: React.FC = () => {
                       </Radio>
                     </Stack>
                   </RadioGroup>
+                  <Flex gap="2" mt="4" alignItems="center">
+                    <Text>Primary: </Text>
+                    <Box
+                      display="inline-block"
+                      background="blue.500"
+                      w="4"
+                      h="4"
+                      borderRadius="lg"
+                    />
+                    <Box
+                      display="inline-block"
+                      background="purple.500"
+                      w="4"
+                      h="4"
+                      borderRadius="lg"
+                    />
+                    <Box
+                      display="inline-block"
+                      background="green.500"
+                      w="4"
+                      h="4"
+                      borderRadius="lg"
+                    />
+                    <Box
+                      display="inline-block"
+                      background="cyan.500"
+                      w="4"
+                      h="4"
+                      borderRadius="lg"
+                    />
+                    <Box
+                      display="inline-block"
+                      background="teal.500"
+                      w="4"
+                      h="4"
+                      borderRadius="lg"
+                    />
+                  </Flex>
                 </chakra.fieldset>
                 <chakra.fieldset>
                   <Box
