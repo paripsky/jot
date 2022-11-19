@@ -1,4 +1,4 @@
-# <img src="assets/icon.png" width="20" /> Jot
+# <img src="apps/electron/assets/icon.png" width="20" /> Jot
 
 ## Install
 
@@ -7,7 +7,7 @@ Clone the repo and install dependencies:
 ```bash
 git clone https://github.com/paripsky/jot.git
 cd jot
-npm install
+pnpm install
 ```
 
 ## Starting Development
@@ -15,7 +15,7 @@ npm install
 Start the app in the `dev` environment:
 
 ```bash
-npm start
+pnpm dev
 ```
 
 ## Packaging for Production
@@ -23,5 +23,5 @@ npm start
 To package apps for the local platform:
 
 ```bash
-npm run package
+pnpm run package
 ```
