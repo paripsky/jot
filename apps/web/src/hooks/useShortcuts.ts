@@ -1,46 +1,46 @@
 import { useEffect } from 'react';
 
 export enum Keys {
-	F = 'F',
-	P = 'P',
-	K = 'K',
-	Escape = 'Escape',
+  F = 'F',
+  P = 'P',
+  K = 'K',
+  Escape = 'Escape',
 }
 
 export enum ModifierKeys {
-	CommandOrControl = 'CommandOrControl',
+  CommandOrControl = 'CommandOrControl',
 }
 
 export type Shortcut = `${ModifierKeys}+${Keys}` | Keys;
 
 const useShortcuts = (shortcuts: Shortcut[], action: () => void) => {
-	useEffect(() => {
-		const onKeyPress = (e: KeyboardEvent) => {
-			const shouldTrigger = shortcuts.some((shortcut) => {
-				const hasModifier = shortcut.includes('+');
+  useEffect(() => {
+    const onKeyPress = (e: KeyboardEvent) => {
+      const shouldTrigger = shortcuts.some((shortcut) => {
+        const hasModifier = shortcut.includes('+');
 
-				if (!hasModifier) {
-					return e.code === `Key${shortcut}`;
-				}
+        if (!hasModifier) {
+          return e.code === `Key${shortcut}`;
+        }
 
-				const [modifier, key] = shortcut.split('+');
+        const [modifier, key] = shortcut.split('+');
 
-				if (modifier === ModifierKeys.CommandOrControl) {
-					return (e.ctrlKey || e.metaKey) && e.code === `Key${key}`;
-				}
+        if (modifier === ModifierKeys.CommandOrControl) {
+          return (e.ctrlKey || e.metaKey) && e.code === `Key${key}`;
+        }
 
-				return false;
-			});
+        return false;
+      });
 
-			if (shouldTrigger) {
-				action();
-			}
-		};
+      if (shouldTrigger) {
+        action();
+      }
+    };
 
-		window.addEventListener('keydown', onKeyPress);
+    window.addEventListener('keydown', onKeyPress);
 
-		return () => window.removeEventListener('keydown', onKeyPress);
-	}, [shortcuts, action]);
+    return () => window.removeEventListener('keydown', onKeyPress);
+  }, [shortcuts, action]);
 };
 
 export default useShortcuts;

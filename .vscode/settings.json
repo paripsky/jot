@@ -1,8 +1,0 @@
-{
-    "[typescriptreact]": {
-        "editor.defaultFormatter": "rome.rome"
-    },
-    "[typescript]": {
-        "editor.defaultFormatter": "rome.rome"
-    }
-}
