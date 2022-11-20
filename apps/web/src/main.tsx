@@ -43,5 +43,5 @@ if (container) {
     </React.StrictMode>,
   );
 } else {
-  throw new Error('root element is missing');
+  throw new Error('root element missing');
 }
