@@ -15,7 +15,8 @@ const DividerWithText: React.FC<DividerWithTextProps> = (props) => {
         as="span"
         px="3"
         color={useColorModeValue('neutral.600', 'neutral.400')}
-        fontWeight="medium">
+        fontWeight="medium"
+      >
         {children}
       </Text>
       <Box flex="1">

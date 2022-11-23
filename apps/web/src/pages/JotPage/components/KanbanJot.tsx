@@ -143,7 +143,8 @@ const KanbanJot: React.FC<KanbanJotProps> = ({ data, onChange }) => {
                       padding: 4,
                       // width: 250,
                       minHeight: 500,
-                    }}>
+                    }}
+                  >
                     {column.items.map((item, index) => (
                       <Draggable key={item.id} draggableId={item.id} index={index}>
                         {(provided, snapshot) => (
@@ -167,7 +168,8 @@ const KanbanJot: React.FC<KanbanJotProps> = ({ data, onChange }) => {
                               //   : '#456C86',
                               // color: 'white',
                               ...provided.draggableProps.style,
-                            }}>
+                            }}
+                          >
                             {item.title}
                           </Box>
                         )}

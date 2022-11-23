@@ -98,7 +98,8 @@ const Sidebar: React.FC = () => {
               variant={location.pathname.includes(`/jot/${id}`) ? 'solid' : 'outline'}
               // mb="2"
               border="none"
-              to={`/jot/${id}`}>
+              to={`/jot/${id}`}
+            >
               <Text noOfLines={1} whiteSpace="initial" textAlign="initial" fontSize="sm">
                 {name}
               </Text>
@@ -112,7 +113,8 @@ const Sidebar: React.FC = () => {
         justifyContent="flex-start"
         variant="ghost"
         fontSize="sm"
-        onClick={addNewJot}>
+        onClick={addNewJot}
+      >
         Create
       </Button>
       <LinkButton
@@ -121,7 +123,8 @@ const Sidebar: React.FC = () => {
         justifyContent="flex-start"
         variant="ghost"
         fontSize="sm"
-        to="/marketplace">
+        to="/marketplace"
+      >
         Marketplace
       </LinkButton>
       <LinkButton
@@ -130,7 +133,8 @@ const Sidebar: React.FC = () => {
         justifyContent="flex-start"
         variant="ghost"
         fontSize="sm"
-        to="/marketplace">
+        to="/marketplace"
+      >
         Docs
       </LinkButton>
       <LinkButton
@@ -139,7 +143,8 @@ const Sidebar: React.FC = () => {
         justifyContent="flex-start"
         variant="ghost"
         fontSize="sm"
-        to="/settings">
+        to="/settings"
+      >
         Settings
       </LinkButton>
       <Box borderTopWidth={1} mb="2" mt="4" />
@@ -205,7 +210,8 @@ const Sidebar: React.FC = () => {
       w="3xs"
       p="2"
       borderRightWidth={1}
-      {...floatingProps}>
+      {...floatingProps}
+    >
       {sidebarBody}
     </chakra.aside>
   );

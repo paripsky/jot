@@ -58,7 +58,8 @@ const TodoListJot: React.FC<TodoListJotProps> = ({ data, onChange }) => {
             e.preventDefault();
             addItem();
             setText('');
-          }}>
+          }}
+        >
           <InputGroup size="sm" w="sm">
             <Input value={text} onChange={(e) => setText(e.target.value)} />
             <InputRightElement mr="1">
@@ -87,7 +88,8 @@ const TodoListJot: React.FC<TodoListJotProps> = ({ data, onChange }) => {
                   ),
                 ),
               )
-            }>
+            }
+          >
             {item.title}
           </Checkbox>
         </ListItem>

@@ -95,7 +95,8 @@ const Jot: React.FC<JotProps> = ({ id, type, data, onChange }) => {
                 </a>
               );
             },
-          }}>
+          }}
+        >
           {type === JotItemTypes.markdown ? (data as string) : `~~~${type}\n${data as string}\n~~~`}
         </ReactMarkdown>
       );

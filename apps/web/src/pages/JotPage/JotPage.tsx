@@ -15,6 +15,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import React, { KeyboardEvent, Suspense, useCallback, useEffect, useRef, useState } from 'react';
+import { BsMicFill } from 'react-icons/bs';
 import { Navigate, useParams } from 'react-router-dom';
 
 import IconPicker from '@/components/IconPicker';
@@ -239,7 +240,8 @@ function JotPage() {
                 if (editing !== item) return;
                 onSubmitKeyDown(e, onSubmitEdit);
               }}
-              outline={editing && editing.id === id ? '1px solid' : undefined}>
+              outline={editing && editing.id === id ? '1px solid' : undefined}
+            >
               {editing === item ? (
                 <Suspense fallback={<Spinner />}>
                   <JotEditor
@@ -278,7 +280,8 @@ function JotPage() {
                           display: 'flex',
                         },
                       }
-                }>
+                }
+              >
                 {isEditing ? (
                   <>
                     <Tooltip label="Save Item" placement="top" openDelay={500}>
@@ -359,7 +362,8 @@ function JotPage() {
           borderRadius="5"
           outline="1px solid"
           outlineColor="neutral.600"
-          p="2">
+          p="2"
+        >
           <Flex>
             <ButtonGroup variant="outline" isAttached>
               {Object.keys(JotItemTypes).map((jotItemType) => {
@@ -397,14 +401,12 @@ function JotPage() {
               />
             </Suspense>
           </Box>
-          <Flex mt="2" justifyContent="flex-end">
-            <Text fontSize="xs" alignSelf="center" color="neutral.400">
-              Use Voice (Speech To Text)
-            </Text>
+          <Flex mt="2" justifyContent="flex-end" gap="2">
+            <IconButton size="xs" icon={<BsMicFill />} aria-label="Use voice" />
             <Text fontSize="xs" alignSelf="center" color="neutral.400">
               Ctrl + Enter
             </Text>
-            <Button size="xs" ml="2" onClick={onSubmit} disabled={!newItemState.data}>
+            <Button size="xs" onClick={onSubmit} disabled={!newItemState.data}>
               Submit
             </Button>
           </Flex>

@@ -78,7 +78,8 @@ const MenuList: React.FC<MenuListProps> = ({
       onBlur={onBlur}
       onClick={onClick}
       left={offset.x}
-      top={offset.y}>
+      top={offset.y}
+    >
       {children}
     </Stack>
   );

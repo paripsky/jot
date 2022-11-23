@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "pnpm --parallel --stream --filter \"@jot/*\" dev",
     "lint": "pnpm eslint ./apps --fix --max-warnings=0",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky install"

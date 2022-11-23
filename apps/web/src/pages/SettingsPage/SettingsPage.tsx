@@ -29,7 +29,8 @@ const SettingsPage: React.FC = () => {
         <SimpleGrid
           display={{ base: 'initial', md: 'grid' }}
           columns={{ md: 3 }}
-          spacing={{ md: 6 }}>
+          spacing={{ md: 6 }}
+        >
           <GridItem colSpan={{ md: 1 }}>
             <Box px={[4, 0]}>
               <Heading fontSize="lg" fontWeight="medium" lineHeight="6">
@@ -45,18 +46,21 @@ const SettingsPage: React.FC = () => {
               method="POST"
               shadow="base"
               rounded={[null, 'md']}
-              overflow={{ sm: 'hidden' }}>
+              overflow={{ sm: 'hidden' }}
+            >
               <Stack
                 px={4}
                 py={5}
                 p={[null, 6]}
                 bg={useColorModeValue('neutral.100', 'neutral.700')}
-                spacing={6}>
+                spacing={6}
+              >
                 <chakra.fieldset>
                   <Box
                     as="legend"
                     fontSize="md"
-                    color={useColorModeValue('neutral.900', 'neutral.50')}>
+                    color={useColorModeValue('neutral.900', 'neutral.50')}
+                  >
                     Theme
                     <Text fontSize="sm" color={useColorModeValue('neutral.500', 'neutral.400')}>
                       Color theme
@@ -67,7 +71,8 @@ const SettingsPage: React.FC = () => {
                     color={useColorModeValue('neutral.700', 'neutral.50')}
                     mt={4}
                     value={colorMode}
-                    onChange={(value) => (value !== colorMode ? toggleColorMode() : null)}>
+                    onChange={(value) => (value !== colorMode ? toggleColorMode() : null)}
+                  >
                     <Stack spacing={4}>
                       <Radio spacing={3} value="dark">
                         Dark
@@ -120,7 +125,8 @@ const SettingsPage: React.FC = () => {
                   <Box
                     as="legend"
                     fontSize="md"
-                    color={useColorModeValue('neutral.900', 'neutral.50')}>
+                    color={useColorModeValue('neutral.900', 'neutral.50')}
+                  >
                     Tab position
                     <Text fontSize="sm" color={useColorModeValue('neutral.500', 'neutral.400')}>
                       Where should the tabs be positioned
@@ -129,7 +135,8 @@ const SettingsPage: React.FC = () => {
                   <RadioGroup
                     fontSize="sm"
                     color={useColorModeValue('neutral.700', 'neutral.50')}
-                    mt={4}>
+                    mt={4}
+                  >
                     <Stack spacing={4}>
                       <Radio spacing={3} value="top">
                         Top
@@ -149,7 +156,8 @@ const SettingsPage: React.FC = () => {
                       <chakra.label
                         htmlFor="comments"
                         fontWeight="md"
-                        color={useColorModeValue('neutral.700', 'neutral.50')}>
+                        color={useColorModeValue('neutral.700', 'neutral.50')}
+                      >
                         Send statistics and crash reports
                       </chakra.label>
                       <Text color={useColorModeValue('neutral.500', 'neutral.400')}>
@@ -163,7 +171,8 @@ const SettingsPage: React.FC = () => {
                     as="legend"
                     fontSize="md"
                     mb="2"
-                    color={useColorModeValue('neutral.900', 'neutral.50')}>
+                    color={useColorModeValue('neutral.900', 'neutral.50')}
+                  >
                     Text Editor
                     <Text fontSize="sm" color={useColorModeValue('neutral.500', 'neutral.400')}>
                       Which text editor to use when editing Jots inline
@@ -180,14 +189,16 @@ const SettingsPage: React.FC = () => {
                     as="legend"
                     fontSize="md"
                     mb="2"
-                    color={useColorModeValue('neutral.900', 'neutral.50')}>
+                    color={useColorModeValue('neutral.900', 'neutral.50')}
+                  >
                     Avatar Type
                     <Text fontSize="sm" color={useColorModeValue('neutral.500', 'neutral.400')}>
                       Which avatar type to use
                       <chakra.a
                         ml="1"
                         textDecoration="underline"
-                        href="https://avatars.dicebear.com/licenses">
+                        href="https://avatars.dicebear.com/licenses"
+                      >
                         Licenses
                       </chakra.a>
                     </Text>
@@ -200,7 +211,8 @@ const SettingsPage: React.FC = () => {
                         ...settings,
                         avatarType: e.target.value as AvatarType,
                       })
-                    }>
+                    }
+                  >
                     {Object.keys(avatarTypes).map((avatarType) => (
                       <option key={avatarType} value={avatarType}>
                         {avatarType}

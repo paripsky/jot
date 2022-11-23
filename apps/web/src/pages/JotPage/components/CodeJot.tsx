@@ -122,7 +122,8 @@ const CodeJot: React.FC<CodeJotProps> = ({ inline, className, children, ...props
           customStyle={{ margin: '-16px' }}
           language={language}
           PreTag="div"
-          {...props}>
+          {...props}
+        >
           {String(children).replace(/\n$/, '')}
         </SyntaxHighlighter>
       </Box>
