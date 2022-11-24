@@ -8,7 +8,7 @@ export type CreateTrayIconOptions = {
 };
 
 const createTrayMenu = ({ showWindow, icon }: CreateTrayIconOptions) => {
-  tray = new Tray(nativeImage.createFromPath(icon));
+  tray = new Tray(nativeImage.createFromPath(icon).resize({ width: 16, height: 16 }));
   const contextMenu = Menu.buildFromTemplate([
     { label: 'Show Jot', click: showWindow },
     { label: 'Exit', role: 'quit' },
