@@ -1,14 +1,26 @@
 import { Button, Flex, Heading, Kbd, Text } from '@chakra-ui/react';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { useJots } from '@/context/jots';
 
 const HomePage: React.FC = () => {
+  const { addJot } = useJots();
+  const navigate = useNavigate();
+
+  const addNewJot = async () => {
+    if (!addJot) return;
+    const jot = await addJot();
+    navigate(`/jot/${jot.id}`);
+  };
+
   return (
     <Flex h="full" w="full" justifyContent="center" alignItems="center">
       <Flex flexDirection="column" gap="2" textAlign="center">
         <Flex alignItems="center" gap="2">
           <Heading size="sm">Pick a Jot</Heading>
           <Text>or</Text>
-          <Button colorScheme="primary" size="xs">
+          <Button colorScheme="primary" size="xs" onClick={addNewJot}>
             Create a new Jot
           </Button>
         </Flex>

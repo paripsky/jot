@@ -21,7 +21,6 @@ export type JotEditorProps = {
 function JotEditor({ data, type, onChange, onSubmit, onCancel }: JotEditorProps) {
   const { colorMode } = useColorMode();
   const [monacoTheme, setMonacoTheme] = useState('dark');
-  // const [code, setCode] = useState(codeProp);
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
   const onEnterRef = useRef<() => void>(onSubmit);
   onEnterRef.current = onSubmit;
@@ -37,12 +36,6 @@ function JotEditor({ data, type, onChange, onSubmit, onCancel }: JotEditorProps)
 
   const handleEditorDidMount = (e: editor.IStandaloneCodeEditor) => {
     editorRef.current = e;
-    // e.addCommand(KeyCode.Enter, () => {
-    //   onEnterRef.current();
-    // });
-    // e.addCommand(KeyCode.Escape, () => {
-    //   onCancelRef.current();
-    // });
   };
 
   const codeChanged = (newCode = data) => {
@@ -53,7 +46,6 @@ function JotEditor({ data, type, onChange, onSubmit, onCancel }: JotEditorProps)
     setMonacoTheme(colorMode === 'light' ? 'vs-light' : 'dark');
   }, [colorMode]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const onExcalidrawChange = useCallback(
     (elements: readonly ExcalidrawElement[]) => {
       if (elements === data) return;
@@ -62,16 +54,6 @@ function JotEditor({ data, type, onChange, onSubmit, onCancel }: JotEditorProps)
     [onChange, data],
   );
 
-  // useEffect(() => {
-  //   if (type !== JotItemTypes.excalidraw || !excalidrawRef.current) return;
-  //   if (excalidrawRef.current.getSceneElementsIncludingDeleted() === data)
-  //     return;
-  //   console.log('done', data);
-  //   excalidrawRef.current.updateScene({
-  //     elements: data as ExcalidrawElement[],
-  //   });
-  // }, [type, data]);
-
   const editorInput = (() => {
     switch (type) {
       case JotItemTypes.excalidraw:
@@ -79,17 +61,9 @@ function JotEditor({ data, type, onChange, onSubmit, onCancel }: JotEditorProps)
           <Flex minH="sm" h="full" w="full">
             <Excalidraw
               ref={excalidrawRef}
-              // key={editing ? editing.id : undefined}
               initialData={initialExcalidrawData}
               onChange={onExcalidrawChange}
               theme={colorMode}
-              // onPointerUpdate={(payload) => console.log(payload)}
-              // onCollabButtonClick={() =>
-              //   window.alert('You clicked on collab button')
-              // }
-              // viewModeEnabled={viewModeEnabled}
-              // zenModeEnabled={zenModeEnabled}
-              // gridModeEnabled={gridModeEnabled}
             />
           </Flex>
         );
@@ -105,7 +79,6 @@ function JotEditor({ data, type, onChange, onSubmit, onCancel }: JotEditorProps)
             }}
             language={type}
             theme={monacoTheme}
-            // defaultValue={code}
             onChange={codeChanged}
             value={data as string}
             onMount={handleEditorDidMount}

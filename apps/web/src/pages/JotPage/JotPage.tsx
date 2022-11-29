@@ -1,4 +1,4 @@
-import { CheckIcon, CloseIcon, CopyIcon, DeleteIcon, EditIcon, LinkIcon } from '@chakra-ui/icons';
+import { LinkIcon } from '@chakra-ui/icons';
 import {
   Box,
   Button,
@@ -12,8 +12,8 @@ import {
   Spinner,
   Text,
   Tooltip,
-  useToast,
 } from '@chakra-ui/react';
+import { Reorder } from 'framer-motion';
 import React, { KeyboardEvent, Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { BsMicFill } from 'react-icons/bs';
 import { Navigate, useParams } from 'react-router-dom';
@@ -33,16 +33,16 @@ import useKey from '@/hooks/useKey';
 import generateID from '@/utils/id';
 import logger from '@/utils/logger';
 
-const Jot = React.lazy(() => import('./components/Jot'));
-const JotEditor = React.lazy(() => import('./components/JotEditor'));
+import { JotListItem } from './components/JotListItem';
 
-type TypeAndDataState = {
+const JotEditor = React.lazy(() => import('@/pages/JotPage/components/JotEditor'));
+
+export type TypeAndDataState = {
   type: JotItemTypes;
   data: JotItemData;
 };
 
 function JotPage() {
-  const toast = useToast();
   const { jotId } = useParams();
   const [editing, setEditing] = useState<JotItem | false>(false);
   const { updateJot, getJot } = useJots();
@@ -54,6 +54,8 @@ function JotPage() {
     data: getDefaultValueForType(defaultJotItemType),
   }));
   const { key: newItemKey, resetKey: resetNewItemKey } = useKey();
+  const [hovering, setHovering] = useState<JotItem | null>(null);
+  const [dragging, setDragging] = useState<JotItem | null>(null);
 
   const scrollToBottom = useCallback(() => {
     setTimeout(() => {
@@ -76,7 +78,7 @@ function JotPage() {
   };
 
   const addNewItem = () => {
-    if (!(jot && updateJot)) return;
+    if (!jot || !updateJot) return;
 
     const newJot = {
       ...jot,
@@ -95,11 +97,22 @@ function JotPage() {
   };
 
   const editItem = (newItem: JotItem) => {
-    if (!(jot && updateJot)) return;
+    if (!jot || !updateJot) return;
 
     const newJot = {
       ...jot,
       items: jot.items.map((item) => (item.id === newItem.id ? newItem : item)),
+    };
+    setJot(newJot);
+    updateJot(newJot);
+  };
+
+  const onReorderJotItems = (items: JotItem[]) => {
+    if (!jot || !updateJot) return;
+
+    const newJot = {
+      ...jot,
+      items,
     };
     setJot(newJot);
     updateJot(newJot);
@@ -159,7 +172,7 @@ function JotPage() {
   };
 
   const updateJotName = (name: string) => {
-    if (!(jot && updateJot)) return;
+    if (!jot || !updateJot) return;
 
     const newJot = {
       ...jot,
@@ -170,7 +183,7 @@ function JotPage() {
   };
 
   const updateJotIcon = (icon: string) => {
-    if (!(jot && updateJot)) return;
+    if (!jot || !updateJot) return;
 
     const newJot = {
       ...jot,
@@ -181,7 +194,7 @@ function JotPage() {
   };
 
   const removeJotItem = (jotItemId: string) => {
-    if (!(jot && updateJot)) return;
+    if (!jot || !updateJot) return;
 
     const newJot = {
       ...jot,
@@ -190,6 +203,8 @@ function JotPage() {
     setJot(newJot);
     updateJot(newJot);
   };
+
+  const onJotItemDragStop = useCallback(() => setDragging(null), [setDragging]);
 
   useEffect(() => {
     if (!(getJot && jotId)) return;
@@ -224,135 +239,28 @@ function JotPage() {
         </ButtonGroup>
       </Flex>
       <Flex flex="1" flexDirection="column" overflow="auto" ref={jotItemsContainerRef} pt="3">
-        {jot.items.map((item) => {
-          const { id, type, data } = item;
-          const isEditing = editing === item;
-
-          return (
-            <Flex
-              position="relative"
-              key={id}
-              id={id}
-              justifyContent="space-between"
-              p="2"
-              m="2"
-              onKeyDownCapture={(e) => {
-                if (editing !== item) return;
-                onSubmitKeyDown(e, onSubmitEdit);
-              }}
-              outline={editing && editing.id === id ? '1px solid' : undefined}
-            >
-              {editing === item ? (
-                <Suspense fallback={<Spinner />}>
-                  <JotEditor
-                    data={editState?.data}
-                    type={type}
-                    onChange={onChangeEdit}
-                    onSubmit={onSubmitEdit}
-                    onCancel={onCancelEdit}
-                  />
-                </Suspense>
-              ) : (
-                <Box w="full" onDoubleClick={() => enterEditMode(item)}>
-                  <Jot
-                    id={id}
-                    type={type}
-                    data={data}
-                    onChange={(newData: unknown) => editItem({ ...item, data: newData })}
-                  />
-                </Box>
-              )}
-              <Flex
-                // flexDirection="column"
-                ml="2"
-                gap="2"
-                position={isEditing ? 'relative' : 'absolute'}
-                top={isEditing ? 'auto' : '-7'}
-                right="0"
-                // background="neutral.800"
-                p="2"
-                display={isEditing ? 'flex' : 'none'}
-                sx={
-                  isEditing
-                    ? undefined
-                    : {
-                        [`#${id}:hover &`]: {
-                          display: 'flex',
-                        },
-                      }
-                }
-              >
-                {isEditing ? (
-                  <>
-                    <Tooltip label="Save Item" placement="top" openDelay={500}>
-                      <IconButton
-                        size="xs"
-                        icon={<CheckIcon />}
-                        aria-label="Save item"
-                        onClick={onSubmitEdit}
-                      />
-                    </Tooltip>
-                    <Tooltip label="Cancel" placement="top" openDelay={500}>
-                      <IconButton
-                        size="xs"
-                        icon={<CloseIcon />}
-                        aria-label="Cancel"
-                        onClick={onCancelEdit}
-                      />
-                    </Tooltip>
-                  </>
-                ) : (
-                  <>
-                    <Tooltip label="Edit item" placement="top" openDelay={500}>
-                      <IconButton
-                        size="xs"
-                        icon={<EditIcon />}
-                        aria-label="Edit item"
-                        onClick={() => enterEditMode(item)}
-                      />
-                    </Tooltip>
-                    <Tooltip label="Copy item" placement="top" openDelay={500}>
-                      <IconButton
-                        size="xs"
-                        icon={<CopyIcon />}
-                        aria-label="Copy item"
-                        onClick={() => {
-                          let { data } = item;
-                          if (item.type === JotItemTypes.excalidraw) {
-                            // for excalidraw, copy the elements to the clipboard so that they can be pasted in excalidraw
-                            data = {
-                              type: 'excalidraw/clipboard',
-                              elements: data,
-                              files: {},
-                            } as never;
-                          }
-                          navigator.clipboard.writeText(
-                            typeof data === 'string' ? data : JSON.stringify(data, null, 2),
-                          );
-                          toast({
-                            title: 'Copied item to clipboard',
-                            position: 'top-right',
-                            status: 'success',
-                            isClosable: true,
-                            duration: 1500,
-                          });
-                        }}
-                      />
-                    </Tooltip>
-                    <Tooltip label="Delete item" placement="top" openDelay={500}>
-                      <IconButton
-                        size="xs"
-                        icon={<DeleteIcon />}
-                        aria-label="Delete item"
-                        onClick={() => removeJotItem(id)}
-                      />
-                    </Tooltip>
-                  </>
-                )}
-              </Flex>
-            </Flex>
-          );
-        })}
+        <Reorder.Group axis="y" values={jot.items} onReorder={onReorderJotItems}>
+          {jot.items.map((item) => (
+            <JotListItem
+              key={item.id}
+              item={item}
+              onSubmitKeyDown={onSubmitKeyDown}
+              onSubmitEdit={onSubmitEdit}
+              editState={editState}
+              onChangeEdit={onChangeEdit}
+              onCancelEdit={onCancelEdit}
+              enterEditMode={enterEditMode}
+              editItem={editItem}
+              isEditing={editing === item}
+              removeJotItem={removeJotItem}
+              hovering={hovering}
+              onHover={(item) => setHovering(item)}
+              dragging={dragging}
+              onDragStart={(item) => setDragging(item)}
+              onDragStop={onJotItemDragStop}
+            />
+          ))}
+        </Reorder.Group>
       </Flex>
       <Flex mt="2" zIndex={5} onKeyDownCapture={(e) => onSubmitKeyDown(e, onSubmit)}>
         <Flex
