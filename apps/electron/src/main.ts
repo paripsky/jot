@@ -1,10 +1,10 @@
 import './jots';
 
 import { app, BrowserWindow, shell } from 'electron';
-import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 import path from 'path';
 
+import { logger } from './logger';
 import MenuBuilder from './menu';
 import { isMacOS, isWindows } from './platform';
 import createTrayMenu from './tray';
@@ -13,8 +13,7 @@ import { waitForPort } from './utils/isPortReady';
 
 class AppUpdater {
   constructor() {
-    log.transports.file.level = 'info';
-    autoUpdater.logger = log;
+    autoUpdater.logger = logger;
     autoUpdater.checkForUpdatesAndNotify();
   }
 }
@@ -84,10 +83,9 @@ const createWindow = async () => {
     height: 728,
     icon: getAssetPath(iconPath),
     webPreferences: {
-      sandbox: false,
       preload: app.isPackaged
         ? path.join(__dirname, 'preload.js')
-        : path.join(__dirname, '../dist/preload.js'),
+        : path.join(__dirname, '../distPreload/preload.js'),
     },
   });
 

@@ -4,7 +4,7 @@ import { app, ipcMain } from 'electron';
 import { mkdir, readFile, writeFile } from 'fs/promises';
 import path from 'path';
 
-import logger from './logger';
+import { logger } from './logger';
 
 // todo: consider changing the path to another one like home etc.
 const directoryPath = path.join(app.getPath('userData'), 'jots');
@@ -59,12 +59,7 @@ const writeJot = async (jot: Jot) => {
     if (didNameChange) {
       const newIndex = index.map((item) =>
         item.id === jot.id
-          ? {
-              id: jot.id,
-              name: jot.name,
-              icon: jot?.icon,
-              version: jot?.version,
-            }
+          ? { id: jot.id, name: jot.name, icon: jot?.icon, version: jot?.version }
           : item,
       );
       await writeIndex(newIndex);

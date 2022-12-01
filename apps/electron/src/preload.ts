@@ -1,7 +1,15 @@
 import type { Jot, JotEntry } from '@jot/web/src/types/jot';
 import { contextBridge, ipcRenderer } from 'electron';
 
-import logger from './logger';
+const logTypesArr = ['log', 'info', 'warn', 'error'] as const;
+
+const loggerRenderer = logTypesArr.reduce(
+  (acc, logType) => ({
+    ...acc,
+    [logType]: (...args: string[]) => ipcRenderer.send(`logger.${logType}`, ...args),
+  }),
+  {},
+);
 
 const api = {
   async getJotFiles() {
@@ -44,7 +52,7 @@ const api = {
 
     return jot as Jot;
   },
-  logger: logger.functions,
+  logger: loggerRenderer,
 };
 
 export type API = typeof api;
