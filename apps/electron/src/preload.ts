@@ -1,6 +1,8 @@
 import type { Jot, JotEntry } from '@jot/web/src/types/jot';
 import { contextBridge, ipcRenderer } from 'electron';
 
+import type { LoggerFunctions } from './logger';
+
 const logTypesArr = ['log', 'info', 'warn', 'error'] as const;
 
 const loggerRenderer = logTypesArr.reduce(
@@ -9,7 +11,7 @@ const loggerRenderer = logTypesArr.reduce(
     [logType]: (...args: string[]) => ipcRenderer.send(`logger.${logType}`, ...args),
   }),
   {},
-);
+) as LoggerFunctions;
 
 const api = {
   async getJotFiles() {
