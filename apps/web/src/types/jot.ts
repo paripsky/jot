@@ -27,5 +27,10 @@ export type Jot = {
   icon?: string;
 
   // the version of this jot - needed for jot migration in the future
-  version?: number;
+  version?: string;
+};
+
+export type CustomJotItem = {
+  icon: () => unknown;
+  view: (props: { el: HTMLDivElement; data: unknown }) => void;
 };

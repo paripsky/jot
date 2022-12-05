@@ -5,7 +5,7 @@ import { ImEmbed } from 'react-icons/im';
 import { SiHtml5, SiJavascript, SiMarkdown, SiReact, SiTypescript } from 'react-icons/si';
 import { VscJson } from 'react-icons/vsc';
 
-import { Jot, JotEntry, JotItem, JotItemTypes } from '@/types/jot';
+import { CustomJotItem, Jot, JotEntry, JotItem, JotItemTypes } from '@/types/jot';
 
 export type { Jot, JotEntry, JotItem } from '@/types/jot';
 export { JotItemTypes } from '@/types/jot';
@@ -44,6 +44,16 @@ export const getDefaultValueForType = (type: JotItemTypes) => {
     default:
       return '';
   }
+};
+
+export const customJotItems: Record<string, CustomJotItem> = {
+  custom_1: {
+    icon: () => <>🐲</>,
+    view({ el, data }) {
+      console.log('viewd', el);
+      el.innerText = data as string;
+    },
+  },
 };
 
 const jotsContext = createContext<JotsContext>({

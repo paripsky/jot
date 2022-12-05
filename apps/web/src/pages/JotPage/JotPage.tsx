@@ -14,12 +14,21 @@ import {
   Tooltip,
 } from '@chakra-ui/react';
 import { Reorder } from 'framer-motion';
-import React, { KeyboardEvent, Suspense, useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  KeyboardEvent,
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { BsMicFill } from 'react-icons/bs';
 import { Navigate, useParams } from 'react-router-dom';
 
 import IconPicker from '@/components/IconPicker';
 import {
+  customJotItems,
   defaultJotItemType,
   getDefaultValueForType,
   Jot as JotType,
@@ -56,6 +65,10 @@ function JotPage() {
   const { key: newItemKey, resetKey: resetNewItemKey } = useKey();
   const [hovering, setHovering] = useState<JotItem | null>(null);
   const [dragging, setDragging] = useState<JotItem | null>(null);
+  const jotItemTypes = useMemo(
+    () => [...Object.keys(JotItemTypes), ...Object.keys(customJotItems)],
+    [],
+  );
 
   const scrollToBottom = useCallback(() => {
     setTimeout(() => {
@@ -274,7 +287,7 @@ function JotPage() {
         >
           <Flex>
             <ButtonGroup variant="outline" isAttached>
-              {Object.keys(JotItemTypes).map((jotItemType) => {
+              {jotItemTypes.map((jotItemType) => {
                 const Icon = jotItemTypesIcons[jotItemType];
                 const commonProps = {
                   size: 'xs',

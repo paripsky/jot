@@ -3,11 +3,11 @@ import '../../../github-markdown.css';
 import { Box, useColorMode } from '@chakra-ui/react';
 import { Excalidraw } from '@excalidraw/excalidraw';
 import { ExcalidrawElement } from '@excalidraw/excalidraw/types/element/types';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
-import { JotItem, JotItemData, JotItemTypes } from '@/context/jots';
+import { customJotItems, JotItem, JotItemData, JotItemTypes } from '@/context/jots';
 
 import CodeJot from './CodeJot';
 import { ConverterJotData } from './ConverterJotEditor';
@@ -50,6 +50,14 @@ const getEmbedProps = (url: string) => {
 
 const Jot: React.FC<JotProps> = ({ id, type, data, onChange }) => {
   const { colorMode } = useColorMode();
+  const customJotItem = customJotItems[type];
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!customJotItem || !containerRef.current) return;
+    containerRef.current.replaceChildren();
+    customJotItem.view({ el: containerRef.current, data });
+  }, [customJotItem, data]);
 
   switch (type) {
     case JotItemTypes.embed: {
@@ -109,6 +117,10 @@ const Jot: React.FC<JotProps> = ({ id, type, data, onChange }) => {
     case JotItemTypes.todolist:
       return <TodoListJot data={data as string} onChange={onChange} />;
     default:
+      if (customJotItem) {
+        return <Box ref={containerRef} />;
+      }
+
       return <Box whiteSpace="pre-wrap">{data as string}</Box>;
   }
 };
