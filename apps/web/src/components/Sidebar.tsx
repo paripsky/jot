@@ -76,31 +76,35 @@ const Sidebar: React.FC = () => {
           bg={useColorModeValue('neutral.200', 'neutral.900')}
         >
           <IconButton
-            icon={<Icon boxSize={5} as={FiFolder} />}
+            icon={<Icon boxSize="6" as={FiFolder} />}
             borderRadius="none"
+            size="lg"
             variant="ghost"
             aria-label="Toggle Jot List"
             onClick={toggleJotMenu}
           />
           <IconButton
-            icon={<Icon boxSize={5} as={MdAddCircleOutline} />}
+            icon={<Icon boxSize="6" as={MdAddCircleOutline} />}
             borderRadius="none"
+            size="lg"
             variant="ghost"
             aria-label="Create Jot"
             onClick={addNewJot}
           />
           <Link to="/marketplace">
             <IconButton
-              icon={<Icon boxSize={5} as={MdStorefront} />}
+              icon={<Icon boxSize="6" as={MdStorefront} />}
               borderRadius="none"
+              size="lg"
               variant="ghost"
               aria-label="Marketplace"
             />
           </Link>
           <Link to="/docs">
             <IconButton
-              icon={<Icon boxSize={5} as={MdNotes} />}
+              icon={<Icon boxSize="6" as={MdNotes} />}
               borderRadius="none"
+              size="lg"
               variant="ghost"
               aria-label="Docs"
             />
@@ -115,14 +119,16 @@ const Sidebar: React.FC = () => {
                 />
               }
               borderRadius="none"
+              size="lg"
               variant="ghost"
               aria-label="Profile"
             />
           </Link>
           <Link to="/settings">
             <IconButton
-              icon={<Icon boxSize={5} as={FiSettings} />}
+              icon={<Icon boxSize="6" as={FiSettings} />}
               borderRadius="none"
+              size="lg"
               variant="ghost"
               aria-label="Settings"
             />
@@ -158,6 +164,7 @@ const Sidebar: React.FC = () => {
                     variant={location.pathname.includes(`/jot/${id}`) ? 'solid' : 'outline'}
                     // mb="2"
                     border="none"
+                    borderRadius="none"
                     to={`/jot/${id}`}
                   >
                     <Text noOfLines={1} whiteSpace="initial" textAlign="initial" fontSize="sm">
