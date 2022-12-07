@@ -1,28 +1,25 @@
 import {
   Avatar,
   Box,
-  Button,
-  chakra,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
   DrawerContent,
   DrawerOverlay,
+  Flex,
   Icon,
+  IconButton,
   Input,
   InputGroup,
   InputLeftElement,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Skeleton,
+  InputRightElement,
+  Kbd,
   Spinner,
   Text,
 } from '@chakra-ui/react';
 import React, { useMemo, useRef, useState } from 'react';
 import { BsSearch } from 'react-icons/bs';
-import { FiSettings } from 'react-icons/fi';
+import { FiFolder, FiSettings } from 'react-icons/fi';
 import { MdAddCircleOutline, MdNotes, MdStorefront } from 'react-icons/md';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -30,6 +27,7 @@ import { useJots } from '../context/jots';
 import { useLayout } from '../context/layout';
 import { useSettings } from '../context/settings';
 import { getAvatarUrl } from '../utils/avatar';
+import Link from './Link';
 import LinkButton from './LinkButton';
 
 const Sidebar: React.FC = () => {
@@ -37,7 +35,6 @@ const Sidebar: React.FC = () => {
   const [searchText, setSearchText] = useState('');
   const searchRef = useRef<HTMLInputElement>(null);
   const { jots, jotsLoading, addJot } = useJots();
-  const loadingUser = false;
   const { isSidebarOpen, toggleSidebar, isSidebarFloating } = useLayout();
   const { settings } = useSettings();
   const navigate = useNavigate();
@@ -68,110 +65,100 @@ const Sidebar: React.FC = () => {
 
   const sidebarBody = (
     <>
-      <InputGroup my="2">
-        {/* <InputRightElement>
-          <Kbd>/</Kbd>
-        </InputRightElement> */}
-        <InputLeftElement>
-          <Icon as={BsSearch} />
-        </InputLeftElement>
-        <Input
-          placeholder="Search"
-          ref={searchRef}
-          value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
-        />
-      </InputGroup>
-      <Box flex="1" maxH="full" overflow="auto" p="1">
-        {/* Content */}
-        {/* <Link to="/util/base64">base64</Link> */}
-        {jotsLoading ? (
-          <Spinner />
-        ) : (
-          matchingJots.map(({ id, name, icon }) => (
-            <LinkButton
-              key={id}
-              size="xs"
-              leftIcon={icon ? <>{icon}</> : undefined}
-              w="full"
-              justifyContent="flex-start"
-              variant={location.pathname.includes(`/jot/${id}`) ? 'solid' : 'outline'}
-              // mb="2"
-              border="none"
-              to={`/jot/${id}`}
-            >
-              <Text noOfLines={1} whiteSpace="initial" textAlign="initial" fontSize="sm">
-                {name}
-              </Text>
-            </LinkButton>
-          ))
-        )}
-      </Box>
-      <Button
-        leftIcon={<Icon boxSize={5} as={MdAddCircleOutline} />}
-        w="full"
-        justifyContent="flex-start"
-        variant="ghost"
-        fontSize="sm"
-        onClick={addNewJot}
-      >
-        Create
-      </Button>
-      <LinkButton
-        leftIcon={<Icon boxSize={5} as={MdStorefront} />}
-        w="full"
-        justifyContent="flex-start"
-        variant="ghost"
-        fontSize="sm"
-        to="/marketplace"
-      >
-        Marketplace
-      </LinkButton>
-      <LinkButton
-        leftIcon={<Icon boxSize={5} as={MdNotes} />}
-        w="full"
-        justifyContent="flex-start"
-        variant="ghost"
-        fontSize="sm"
-        to="/marketplace"
-      >
-        Docs
-      </LinkButton>
-      <LinkButton
-        leftIcon={<Icon boxSize={5} as={FiSettings} />}
-        w="full"
-        justifyContent="flex-start"
-        variant="ghost"
-        fontSize="sm"
-        to="/settings"
-      >
-        Settings
-      </LinkButton>
-      <Box borderTopWidth={1} mb="2" mt="4" />
-      <Skeleton isLoaded={!loadingUser}>
-        <Menu placement="top">
-          <MenuButton aria-label="Options" as="div">
-            <Box display="flex" alignItems="center" p="2" pointerEvents="all" cursor="pointer">
-              <Avatar
-                name="John Doe"
-                size="sm"
-                src={getAvatarUrl(settings.nickname, settings.avatarType)}
-                mr="2"
-              />
-              <Box overflow="hidden">
-                {/* <Link to="/login"> */}
-                <Text fontWeight="semibold" noOfLines={1} title={settings.nickname}>
-                  {settings.nickname}
-                </Text>
-                {/* </Link> */}
-              </Box>
-            </Box>
-          </MenuButton>
-          <MenuList>
-            <MenuItem>Log out</MenuItem>
-          </MenuList>
-        </Menu>
-      </Skeleton>
+      <Flex flex="1" h="full">
+        <Flex flexDirection="column" borderRightWidth={1}>
+          <IconButton
+            icon={<Icon boxSize={5} as={FiFolder} />}
+            borderRadius="none"
+            variant="ghost"
+            aria-label="Toggle Jot List"
+          />
+          <IconButton
+            icon={<Icon boxSize={5} as={MdAddCircleOutline} />}
+            borderRadius="none"
+            variant="ghost"
+            aria-label="Create Jot"
+            onClick={addNewJot}
+          />
+          <Link to="/marketplace">
+            <IconButton
+              icon={<Icon boxSize={5} as={MdStorefront} />}
+              borderRadius="none"
+              variant="ghost"
+              aria-label="Marketplace"
+            />
+          </Link>
+          <Link to="/docs">
+            <IconButton
+              icon={<Icon boxSize={5} as={MdNotes} />}
+              borderRadius="none"
+              variant="ghost"
+              aria-label="Docs"
+            />
+          </Link>
+          <Link to="/settings" mt="auto">
+            <IconButton
+              icon={
+                <Avatar
+                  name="John Doe"
+                  size="xs"
+                  src={getAvatarUrl(settings.nickname, settings.avatarType)}
+                />
+              }
+              borderRadius="none"
+              variant="ghost"
+              aria-label="Profile"
+            />
+          </Link>
+          <Link to="/settings">
+            <IconButton
+              icon={<Icon boxSize={5} as={FiSettings} />}
+              borderRadius="none"
+              variant="ghost"
+              aria-label="Settings"
+            />
+          </Link>
+        </Flex>
+        <Flex flexDirection="column" p="2" w="3xs">
+          <InputGroup size="sm">
+            <InputRightElement>
+              <Kbd>/</Kbd>
+            </InputRightElement>
+            <InputLeftElement>
+              <Icon as={BsSearch} />
+            </InputLeftElement>
+            <Input
+              placeholder="Search"
+              ref={searchRef}
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+            />
+          </InputGroup>
+          <Box flex="1" maxH="full" overflow="auto" p="1">
+            {jotsLoading ? (
+              <Spinner />
+            ) : (
+              matchingJots.map(({ id, name, icon }) => (
+                <LinkButton
+                  key={id}
+                  size="xs"
+                  leftIcon={icon ? <>{icon}</> : undefined}
+                  w="full"
+                  justifyContent="flex-start"
+                  variant={location.pathname.includes(`/jot/${id}`) ? 'solid' : 'outline'}
+                  // mb="2"
+                  border="none"
+                  to={`/jot/${id}`}
+                >
+                  <Text noOfLines={1} whiteSpace="initial" textAlign="initial" fontSize="sm">
+                    {name}
+                  </Text>
+                </LinkButton>
+              ))
+            )}
+          </Box>
+        </Flex>
+      </Flex>
     </>
   );
 
@@ -181,39 +168,26 @@ const Sidebar: React.FC = () => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          {/* <DrawerHeader>Create your account</DrawerHeader> */}
-
           <DrawerBody display="flex" flexDir="column" p="2">
-            <Box h="8" />
             {sidebarBody}
           </DrawerBody>
-
-          {/* <DrawerFooter>
-            <Button variant="outline" mr={3} onClick={onClose}>
-              Cancel
-            </Button>
-            <Button colorScheme="blue">Save</Button>
-          </DrawerFooter> */}
         </DrawerContent>
       </Drawer>
     );
   }
 
   return (
-    <chakra.aside
+    <Flex
+      as="aside"
       aria-hidden={!isSidebarOpen}
       role={isSidebarOpen ? 'dialog' : 'none'}
       tabIndex={isSidebarOpen ? 0 : -1}
-      // bg={useColorModeValue('neutral.50', 'neutral.900')}
-      display="flex"
       flexDir="column"
-      w="3xs"
-      p="2"
       borderRightWidth={1}
       {...floatingProps}
     >
       {sidebarBody}
-    </chakra.aside>
+    </Flex>
   );
 };
 
