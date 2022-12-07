@@ -16,6 +16,7 @@ import {
   Kbd,
   Spinner,
   Text,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import React, { useMemo, useRef, useState } from 'react';
 import { BsSearch } from 'react-icons/bs';
@@ -66,7 +67,11 @@ const Sidebar: React.FC = () => {
   const sidebarBody = (
     <>
       <Flex flex="1" h="full">
-        <Flex flexDirection="column" borderRightWidth={1}>
+        <Flex
+          flexDirection="column"
+          borderRightWidth={1}
+          bg={useColorModeValue('neutral.200', 'neutral.900')}
+        >
           <IconButton
             icon={<Icon boxSize={5} as={FiFolder} />}
             borderRadius="none"
@@ -119,7 +124,12 @@ const Sidebar: React.FC = () => {
             />
           </Link>
         </Flex>
-        <Flex flexDirection="column" p="2" w="3xs">
+        <Flex
+          flexDirection="column"
+          p="2"
+          w="3xs"
+          bg={useColorModeValue('neutral.200', 'neutral.800')}
+        >
           <InputGroup size="sm">
             <InputRightElement>
               <Kbd>/</Kbd>
