@@ -17,6 +17,7 @@ import {
   Spinner,
   Text,
   useColorModeValue,
+  useDisclosure,
 } from '@chakra-ui/react';
 import React, { useMemo, useRef, useState } from 'react';
 import { BsSearch } from 'react-icons/bs';
@@ -39,6 +40,8 @@ const Sidebar: React.FC = () => {
   const { isSidebarOpen, toggleSidebar, isSidebarFloating } = useLayout();
   const { settings } = useSettings();
   const navigate = useNavigate();
+  const { isOpen: isJotMenuOpen, onToggle: toggleJotMenu } = useDisclosure({ defaultIsOpen: true });
+  const jotMenuBg = useColorModeValue('neutral.200', 'neutral.800');
 
   const matchingJots = useMemo(() => {
     if (!searchText) return jots;
@@ -77,6 +80,7 @@ const Sidebar: React.FC = () => {
             borderRadius="none"
             variant="ghost"
             aria-label="Toggle Jot List"
+            onClick={toggleJotMenu}
           />
           <IconButton
             icon={<Icon boxSize={5} as={MdAddCircleOutline} />}
@@ -124,50 +128,47 @@ const Sidebar: React.FC = () => {
             />
           </Link>
         </Flex>
-        <Flex
-          flexDirection="column"
-          p="2"
-          w="3xs"
-          bg={useColorModeValue('neutral.200', 'neutral.800')}
-        >
-          <InputGroup size="sm">
-            <InputRightElement>
-              <Kbd>/</Kbd>
-            </InputRightElement>
-            <InputLeftElement>
-              <Icon as={BsSearch} />
-            </InputLeftElement>
-            <Input
-              placeholder="Search"
-              ref={searchRef}
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-            />
-          </InputGroup>
-          <Box flex="1" maxH="full" overflow="auto" p="1">
-            {jotsLoading ? (
-              <Spinner />
-            ) : (
-              matchingJots.map(({ id, name, icon }) => (
-                <LinkButton
-                  key={id}
-                  size="xs"
-                  leftIcon={icon ? <>{icon}</> : undefined}
-                  w="full"
-                  justifyContent="flex-start"
-                  variant={location.pathname.includes(`/jot/${id}`) ? 'solid' : 'outline'}
-                  // mb="2"
-                  border="none"
-                  to={`/jot/${id}`}
-                >
-                  <Text noOfLines={1} whiteSpace="initial" textAlign="initial" fontSize="sm">
-                    {name}
-                  </Text>
-                </LinkButton>
-              ))
-            )}
-          </Box>
-        </Flex>
+        {isJotMenuOpen && (
+          <Flex flexDirection="column" p="2" w="3xs" bg={jotMenuBg}>
+            <InputGroup size="sm">
+              <InputRightElement>
+                <Kbd>/</Kbd>
+              </InputRightElement>
+              <InputLeftElement>
+                <Icon as={BsSearch} />
+              </InputLeftElement>
+              <Input
+                placeholder="Search"
+                ref={searchRef}
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+              />
+            </InputGroup>
+            <Box flex="1" maxH="full" overflow="auto" p="1">
+              {jotsLoading ? (
+                <Spinner />
+              ) : (
+                matchingJots.map(({ id, name, icon }) => (
+                  <LinkButton
+                    key={id}
+                    size="xs"
+                    leftIcon={icon ? <>{icon}</> : undefined}
+                    w="full"
+                    justifyContent="flex-start"
+                    variant={location.pathname.includes(`/jot/${id}`) ? 'solid' : 'outline'}
+                    // mb="2"
+                    border="none"
+                    to={`/jot/${id}`}
+                  >
+                    <Text noOfLines={1} whiteSpace="initial" textAlign="initial" fontSize="sm">
+                      {name}
+                    </Text>
+                  </LinkButton>
+                ))
+              )}
+            </Box>
+          </Flex>
+        )}
       </Flex>
     </>
   );
