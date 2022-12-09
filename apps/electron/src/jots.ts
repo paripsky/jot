@@ -55,8 +55,9 @@ const writeJot = async (jot: Jot) => {
     }
 
     const didNameChange = itemInIndex.name !== jot.name;
+    const didIconChange = itemInIndex.icon !== jot.icon;
 
-    if (didNameChange) {
+    if (didNameChange || didIconChange) {
       const newIndex = index.map((item) =>
         item.id === jot.id
           ? { id: jot.id, name: jot.name, icon: jot?.icon, version: jot?.version }

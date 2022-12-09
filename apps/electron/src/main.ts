@@ -1,6 +1,6 @@
 import './jots';
 
-import { app, BrowserWindow, shell } from 'electron';
+import { app, BrowserWindow, globalShortcut, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import path from 'path';
 
@@ -112,6 +112,10 @@ const createWindow = async () => {
   createTrayMenu({
     showWindow: () => mainWindow?.show(),
     icon: getAssetPath(iconPath),
+  });
+
+  globalShortcut.register('Shift+CommandOrControl+J', () => {
+    mainWindow?.show();
   });
 
   // Open urls in the user's browser

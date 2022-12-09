@@ -21,8 +21,9 @@ import {
 } from '@chakra-ui/react';
 import React, { useMemo, useRef, useState } from 'react';
 import { BsSearch } from 'react-icons/bs';
+import { CgFileAdd } from 'react-icons/cg';
 import { FiFolder, FiSettings } from 'react-icons/fi';
-import { MdAddCircleOutline, MdNotes, MdStorefront } from 'react-icons/md';
+import { MdNotes, MdStorefront } from 'react-icons/md';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useJots } from '../context/jots';
@@ -31,6 +32,7 @@ import { useSettings } from '../context/settings';
 import { getAvatarUrl } from '../utils/avatar';
 import Link from './Link';
 import LinkButton from './LinkButton';
+import { SidebarButton } from './SidebarButton';
 
 const Sidebar: React.FC = () => {
   const location = useLocation();
@@ -75,40 +77,16 @@ const Sidebar: React.FC = () => {
           borderRightWidth={1}
           bg={useColorModeValue('neutral.200', 'neutral.900')}
         >
-          <IconButton
-            icon={<Icon boxSize="6" as={FiFolder} />}
-            borderRadius="none"
-            size="lg"
-            variant="ghost"
-            aria-label="Toggle Jot List"
+          <SidebarButton
+            title="Toggle Jot List"
+            icon={FiFolder}
             onClick={toggleJotMenu}
+            isActive={isJotMenuOpen}
           />
-          <IconButton
-            icon={<Icon boxSize="6" as={MdAddCircleOutline} />}
-            borderRadius="none"
-            size="lg"
-            variant="ghost"
-            aria-label="Create Jot"
-            onClick={addNewJot}
-          />
-          <Link to="/marketplace">
-            <IconButton
-              icon={<Icon boxSize="6" as={MdStorefront} />}
-              borderRadius="none"
-              size="lg"
-              variant="ghost"
-              aria-label="Marketplace"
-            />
-          </Link>
-          <Link to="/docs">
-            <IconButton
-              icon={<Icon boxSize="6" as={MdNotes} />}
-              borderRadius="none"
-              size="lg"
-              variant="ghost"
-              aria-label="Docs"
-            />
-          </Link>
+          <SidebarButton title="Create Jot" icon={CgFileAdd} onClick={addNewJot} />
+          <SidebarButton title="Marketplace" to="/marketplace" icon={MdStorefront} />
+          <SidebarButton title="Docs" to="/docs" icon={MdNotes} />
+
           <Link to="/settings" mt="auto">
             <IconButton
               icon={
@@ -122,17 +100,10 @@ const Sidebar: React.FC = () => {
               size="lg"
               variant="ghost"
               aria-label="Profile"
+              tabIndex={-1}
             />
           </Link>
-          <Link to="/settings">
-            <IconButton
-              icon={<Icon boxSize="6" as={FiSettings} />}
-              borderRadius="none"
-              size="lg"
-              variant="ghost"
-              aria-label="Settings"
-            />
-          </Link>
+          <SidebarButton title="Settings" to="/settings" icon={FiSettings} />
         </Flex>
         {isJotMenuOpen && (
           <Flex flexDirection="column" p="2" w="3xs" bg={jotMenuBg}>
