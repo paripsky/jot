@@ -9,8 +9,10 @@ export type LinkButtonProps = ButtonProps & {
 
 const LinkButton: React.FC<LinkButtonProps> = ({ children, to, ...rest }) => {
   return (
-    <Link variant="unstyled" to={to} tabIndex={-1}>
-      <Button {...rest}>{children}</Button>
+    <Link variant="unstyled" to={to}>
+      <Button tabIndex={-1} {...rest}>
+        {children}
+      </Button>
     </Link>
   );
 };

@@ -26,9 +26,10 @@ import { FiFolder, FiSettings } from 'react-icons/fi';
 import { MdNotes, MdStorefront } from 'react-icons/md';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import { useLayout } from '@/store/layout';
+import { useSettings } from '@/store/settings';
+
 import { useJots } from '../context/jots';
-import { useLayout } from '../context/layout';
-import { useSettings } from '../context/settings';
 import { getAvatarUrl } from '../utils/avatar';
 import Link from './Link';
 import LinkButton from './LinkButton';
@@ -40,7 +41,7 @@ const Sidebar: React.FC = () => {
   const searchRef = useRef<HTMLInputElement>(null);
   const { jots, jotsLoading, addJot } = useJots();
   const { isSidebarOpen, toggleSidebar, isSidebarFloating } = useLayout();
-  const { settings } = useSettings();
+  const settings = useSettings();
   const navigate = useNavigate();
   const { isOpen: isJotMenuOpen, onToggle: toggleJotMenu } = useDisclosure({ defaultIsOpen: true });
   const jotMenuBg = useColorModeValue('neutral.200', 'neutral.800');
@@ -157,7 +158,7 @@ const Sidebar: React.FC = () => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerBody display="flex" flexDir="column" p="2">
+          <DrawerBody display="flex" flexDir="column" p="0" w="min-content">
             {sidebarBody}
           </DrawerBody>
         </DrawerContent>

@@ -30,7 +30,7 @@ type LayoutProviderProps = {
 
 export function LayoutProvider({ children }: LayoutProviderProps) {
   const { isOpen: isSidebarOpen, onToggle: toggleSidebar } = useDisclosure();
-  const isSidebarFloating = useBreakpointValue({ base: true, md: false });
+  const isSidebarFloating = useBreakpointValue({ base: true, md: false }) || false;
 
   return (
     <layoutContext.Provider value={{ isSidebarOpen, toggleSidebar, isSidebarFloating }}>

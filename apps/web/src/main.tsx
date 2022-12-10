@@ -3,9 +3,10 @@ import React, { Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 
+import { LayoutProvider } from '@/store/layout';
+import { SettingsProvider } from '@/store/settings';
+
 import { JotsProvider } from './context/jots';
-import { LayoutProvider } from './context/layout';
-import { SettingsProvider } from './context/settings';
 import theme from './theme';
 
 const container = document.getElementById('root');

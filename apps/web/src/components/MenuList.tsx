@@ -1,8 +1,8 @@
 import { Stack, StackProps } from '@chakra-ui/react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-export type MenuListProps = StackProps & {
-  children?: React.ReactNode;
+export type MenuListProps = Omit<StackProps, 'children'> & {
+  children: ({ focusedIndex }: { focusedIndex: number }) => React.ReactNode;
   onSelect: () => void;
   offset?: {
     x: number;
@@ -18,19 +18,6 @@ const MenuList: React.FC<MenuListProps> = ({
 }) => {
   const menuRef = useRef<HTMLDivElement>(null);
   const [focusedIndex, setFocusedIndex] = useState(0);
-
-  useEffect(() => {
-    if (!menuRef.current) return;
-
-    setFocusedIndex(0);
-  }, []);
-
-  useEffect(() => {
-    if (!menuRef.current || focusedIndex === -1) return;
-
-    const node = menuRef.current.childNodes[focusedIndex];
-    (node as HTMLElement)?.focus();
-  }, [focusedIndex]);
 
   const closeMenu = useCallback(() => {
     setFocusedIndex(-1);
@@ -51,6 +38,8 @@ const MenuList: React.FC<MenuListProps> = ({
       } else if (e.key === 'Escape') {
         e.preventDefault();
         closeMenu();
+      } else if (e.key === 'Enter') {
+        (menuRef.current.childNodes[focusedIndex] as HTMLElement)?.click();
       }
     };
 
@@ -80,7 +69,7 @@ const MenuList: React.FC<MenuListProps> = ({
       left={offset.x}
       top={offset.y}
     >
-      {children}
+      {children({ focusedIndex })}
     </Stack>
   );
 };

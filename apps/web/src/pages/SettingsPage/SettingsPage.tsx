@@ -16,12 +16,12 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-import { useSettings } from '../../context/settings';
-import { AvatarType, avatarTypes } from '../../utils/avatar';
+import { useSettings } from '@/store/settings';
+import { AvatarType, avatarTypes } from '@/utils/avatar';
 
 const SettingsPage: React.FC = () => {
   const { colorMode, toggleColorMode } = useColorMode();
-  const { settings, updateSettings } = useSettings();
+  const { avatarType, updateSettings } = useSettings();
 
   return (
     <Box m="4">
@@ -205,10 +205,9 @@ const SettingsPage: React.FC = () => {
                   </Box>
                   <Select
                     variant="filled"
-                    value={settings.avatarType}
+                    value={avatarType}
                     onChange={(e) =>
                       updateSettings({
-                        ...settings,
                         avatarType: e.target.value as AvatarType,
                       })
                     }

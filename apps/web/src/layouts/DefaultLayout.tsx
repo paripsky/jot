@@ -2,9 +2,10 @@ import { HamburgerIcon } from '@chakra-ui/icons';
 import { Flex, Icon, IconButton, useColorMode, useColorModeValue } from '@chakra-ui/react';
 import { Outlet } from 'react-router-dom';
 
+import { useLayout } from '@/store/layout';
+
 import Sidebar from '../components/Sidebar';
 import Spotlight from '../components/Spotlight';
-import { useLayout } from '../context/layout';
 
 function DefaultLayout() {
   const { colorMode } = useColorMode();

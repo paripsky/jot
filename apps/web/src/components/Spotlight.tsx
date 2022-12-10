@@ -5,9 +5,9 @@ import {
   Modal,
   ModalContent,
   ModalOverlay,
+  Text,
   useColorModeValue,
   useDisclosure,
-  useOutsideClick,
 } from '@chakra-ui/react';
 import React, { useEffect, useRef } from 'react';
 
@@ -25,11 +25,6 @@ const Spotlight: React.FC = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const { jots } = useJots();
 
-  useOutsideClick({
-    ref,
-    handler: onClose,
-  });
-
   useShortcuts(['CommandOrControl+P', 'CommandOrControl+K'], onOpen);
   useShortcuts([Keys.Escape], onClose);
 
@@ -39,26 +34,41 @@ const Spotlight: React.FC = () => {
     }
   }, [isOpen]);
 
+  const onKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+    if (!inputRef.current) return;
+    if (!['ArrowDown', 'ArrowUp', 'Escape', 'Tab', 'Enter', ' '].includes(e.key)) {
+      inputRef.current.focus();
+    }
+  };
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} initialFocusRef={inputRef}>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent onKeyDown={onKeyDown}>
         <Flex justifyContent="center">
           <Box ref={ref} w="2xl" p="4" bg={bg}>
             <Input placeholder="Search..." ref={inputRef} />
           </Box>
         </Flex>
         <MenuList onSelect={onClose} bg="neutral.900">
-          {jots.map((jot) => (
-            <LinkButton key={jot.id} to={`/jot/${jot.id}`} w="full" variant="ghost">
-              {jot.name}
-            </LinkButton>
-          ))}
-          {searchableRoutes.map((route) => (
-            <LinkButton key={route.name} to={route.path} w="full" variant="ghost">
-              {route.name}
-            </LinkButton>
-          ))}
+          {({ focusedIndex }) => (
+            <>
+              {[
+                ...jots.map(({ id, name }) => ({ to: `/jot/${id}`, name })),
+                ...searchableRoutes.map((route) => ({ to: route.path, name: route.name })),
+              ].map((item, index) => (
+                <LinkButton
+                  key={item.to}
+                  to={item.to}
+                  w="full"
+                  borderRadius="0"
+                  variant={focusedIndex === index ? 'solid' : 'ghost'}
+                >
+                  <Text whiteSpace="pre-wrap">{item.name}</Text>
+                </LinkButton>
+              ))}
+            </>
+          )}
         </MenuList>
       </ModalContent>
     </Modal>
