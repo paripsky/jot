@@ -6,7 +6,7 @@ import { getSearchParam } from './utils/getSearchParam';
 
 const colorMode = getSearchParam('colorMode');
 
-const colors: Record<string, ColorHues> = {
+export const defaultColors: Record<string, ColorHues> = {
   primary: defaultTheme.colors.blue,
   neutral: defaultTheme.colors.gray,
   accent: defaultTheme.colors.teal,
@@ -15,27 +15,30 @@ const colors: Record<string, ColorHues> = {
   error: defaultTheme.colors.red,
 };
 
-const theme = extendTheme({
-  config: {
-    initialColorMode: colorMode || 'dark',
-    useSystemColorMode: false,
-  },
-  colors,
-  styles: {
-    global: (props: StyleFunctionProps) => ({
-      body: {
-        bg: mode('white', 'neutral.900')(props),
-      },
-    }),
-  },
-  semanticTokens: {
-    colors: {
-      text: {
-        default: 'neutral.900',
-        _dark: 'neutral.50',
+export type CreateThemeOptions = {
+  colors: Record<string, ColorHues>;
+};
+
+export const createTheme = ({ colors }: CreateThemeOptions) =>
+  extendTheme({
+    config: {
+      initialColorMode: colorMode || 'dark',
+      useSystemColorMode: false,
+    },
+    colors,
+    styles: {
+      global: (props: StyleFunctionProps) => ({
+        body: {
+          bg: mode('white', 'neutral.800')(props),
+        },
+      }),
+    },
+    semanticTokens: {
+      colors: {
+        text: {
+          default: 'neutral.900',
+          _dark: 'neutral.50',
+        },
       },
     },
-  },
-});
-
-export default theme;
+  });

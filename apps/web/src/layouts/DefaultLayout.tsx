@@ -1,5 +1,5 @@
 import { HamburgerIcon } from '@chakra-ui/icons';
-import { Flex, Icon, IconButton, useColorMode, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Icon, IconButton, useColorMode } from '@chakra-ui/react';
 import { Outlet } from 'react-router-dom';
 
 import { useLayout } from '@/store/layout';
@@ -15,13 +15,7 @@ function DefaultLayout() {
     <Flex h="100vh" css={{ colorScheme: colorMode }}>
       <Spotlight />
       <Sidebar />
-      <Flex
-        overflow="auto"
-        flexDir="column"
-        w="full"
-        p="4"
-        bg={useColorModeValue('neutral.100', 'neutral.800')}
-      >
+      <Flex overflow="auto" flexDir="column" w="full" p="4">
         {isSidebarFloating && (
           <IconButton
             w="fit-content"
