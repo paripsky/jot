@@ -10,8 +10,8 @@ const loggerRenderer = logTypesArr.reduce(
     ...acc,
     [logType]: (...args: string[]) => ipcRenderer.send(`logger.${logType}`, ...args),
   }),
-  {},
-) as LoggerFunctions;
+  {} as LoggerFunctions,
+);
 
 const api = {
   async getJotFiles() {

@@ -58,11 +58,11 @@ const writeJot = async (jot: Jot) => {
     const didIconChange = itemInIndex.icon !== jot.icon;
 
     if (didNameChange || didIconChange) {
-      const newIndex = index.map((item) =>
-        item.id === jot.id
-          ? { id: jot.id, name: jot.name, icon: jot?.icon, version: jot?.version }
-          : item,
-      );
+      const newIndex = index.map((item) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { items: _, ...jotFields } = jot;
+        return item.id === jot.id ? jotFields : item;
+      });
       await writeIndex(newIndex);
     }
   } catch (err) {
@@ -72,12 +72,14 @@ const writeJot = async (jot: Jot) => {
 
 const createJot = async (name: string) => {
   const index = await getJotFiles();
-
+  const now = new Date().toISOString();
   const newJot: Jot = {
     id: generateID(),
     name,
     items: [],
     icon: '📝',
+    createdAt: now,
+    updatedAt: now,
   };
 
   await writeIndex([

@@ -92,6 +92,7 @@ function JotPage() {
 
   const addNewItem = () => {
     if (!jot || !updateJot) return;
+    const now = new Date().toISOString();
 
     const newJot = {
       ...jot,
@@ -101,6 +102,8 @@ function JotPage() {
           id: generateID(),
           type: newItemState.type,
           data: newItemState.data,
+          createdAt: now,
+          updatedAt: now,
         },
       ],
     };

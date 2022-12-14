@@ -80,19 +80,6 @@ export function JotsProvider({ children }: JotsProviderProps) {
 
   async function getJots() {
     setLoadingJots(true);
-    // return new Promise((resolve) => {
-    //   setTimeout(() => {
-    //     const jotsFromLocalStorage = localStorage.getItem('jots');
-    //     let s: Jot[] = [];
-    //     if (jotsFromLocalStorage) {
-    //       s = JSON.parse(jotsFromLocalStorage);
-    //     }
-
-    //     setJots(s);
-    //     resolve(s);
-    //     setLoadingJots(false);
-    //   }, 1000);
-    // });
     const jotEntries = await window.api.getJotFiles();
     setJots(jotEntries);
     setLoadingJots(false);
@@ -106,43 +93,23 @@ export function JotsProvider({ children }: JotsProviderProps) {
     getJots();
   }, []);
 
-  // function saveJotsToLocalStorage(toSave: Jot[]) {
-  //   localStorage.setItem('jots', JSON.stringify(toSave));
-  // }
-
   async function addJot() {
     const jot = await window.api.createJot('New Jot');
     const jotEntries = await window.api.getJotFiles();
     setJots(jotEntries);
 
     return jot;
-    // saveJotsToLocalStorage(newJots);
   }
 
   async function removeJot(jotId: string) {
     const newJots = jots.filter((jot) => jot.id !== jotId);
     setJots(newJots);
-    // saveJotsToLocalStorage(newJots);
   }
-
-  // async function removeJotItem(jot: Jot, jotItemId: string) {
-  //   const newJots = jots.map((jot) =>
-  //     jot.id === jotId
-  //       ? {
-  //           ...jot,
-  //           items: jot.items.filter((item) => item.id !== jotItemId),
-  //         }
-  //       : jot
-  //   );
-  //   setJots(newJots);
-  //   saveJotsToLocalStorage(newJots);
-  // }
 
   async function updateJot(jot: Jot) {
     const newJots = jots.map((s) => (s.id === jot.id ? jot : s));
     setJots(newJots);
     window.api.writeJot(jot);
-    // saveJotsToLocalStorage(newJots);
   }
 
   return (

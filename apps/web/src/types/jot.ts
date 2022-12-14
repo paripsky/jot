@@ -14,6 +14,8 @@ export enum JotItemTypes {
 
 export type JotItem = {
   id: string;
+  updatedAt: string;
+  createdAt: string;
   type: JotItemTypes;
   data: string | unknown;
 };
@@ -23,6 +25,8 @@ export type JotEntry = { id: string; name: string; icon?: string };
 export type Jot = {
   id: string;
   name: string;
+  updatedAt: string;
+  createdAt: string;
   items: JotItem[];
   icon?: string;
 

@@ -6,9 +6,9 @@ import {
   DragHandleIcon,
   EditIcon,
 } from '@chakra-ui/icons';
-import { Box, Flex, IconButton, Spinner, Tooltip, useToast } from '@chakra-ui/react';
+import { Box, Flex, IconButton, Spinner, Text, Tooltip, useToast } from '@chakra-ui/react';
 import { Reorder, useDragControls } from 'framer-motion';
-import React, { KeyboardEvent, Suspense, useCallback, useEffect, useRef } from 'react';
+import React, { KeyboardEvent, Suspense, useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { JotItem, JotItemData, JotItemTypes } from '@/context/jots';
 import type { TypeAndDataState } from '@/pages/JotPage/JotPage';
@@ -54,10 +54,23 @@ export const JotListItem: React.FC<JotListItemProps> = ({
   const controls = useDragControls();
   const toast = useToast();
   const dragHandleRef = useRef<HTMLButtonElement | null>(null);
-  const { id, type, data } = item;
+  const { id, type } = item;
   const isHovering = hovering === item;
   const isDragging = dragging === item;
   const isOtherItemDragging = !!dragging;
+  const timeStamp = useMemo(() => {
+    if (!item.updatedAt) return;
+    const itemDate = new Date(item.updatedAt);
+    const isSameDay = new Date().toDateString() === itemDate.toDateString();
+
+    return item.updatedAt
+      ? new Intl.DateTimeFormat(undefined, {
+          dateStyle: !isSameDay ? 'short' : undefined,
+          timeStyle: 'short',
+          hourCycle: 'h24',
+        }).format(new Date(item.updatedAt))
+      : undefined;
+  }, [item.updatedAt]);
 
   const onDragHandlePointerDown = (e: React.PointerEvent<HTMLButtonElement>) => {
     if (!dragHandleRef.current) return;
@@ -116,12 +129,7 @@ export const JotListItem: React.FC<JotListItemProps> = ({
               />
             </Suspense>
           ) : (
-            <Jot
-              id={id}
-              type={type}
-              data={data}
-              onChange={(newData: unknown) => editItem({ ...item, data: newData })}
-            />
+            <Jot {...item} onChange={(newData: unknown) => editItem({ ...item, data: newData })} />
           )}
         </Box>
         <Flex
@@ -154,6 +162,20 @@ export const JotListItem: React.FC<JotListItemProps> = ({
             </>
           ) : (
             <>
+              {timeStamp && (
+                <Tooltip label={timeStamp} placement="top" openDelay={500}>
+                  <IconButton
+                    size="xs"
+                    icon={
+                      <Text fontSize="12" px="2">
+                        {timeStamp}
+                      </Text>
+                    }
+                    aria-label="Edit item"
+                    onClick={() => enterEditMode(item)}
+                  />
+                </Tooltip>
+              )}
               <Tooltip label="Edit item" placement="top" openDelay={500}>
                 <IconButton
                   size="xs"
