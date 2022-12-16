@@ -20,7 +20,13 @@ export type JotItem = {
   data: string | unknown;
 };
 
-export type JotEntry = { id: string; name: string; icon?: string };
+export type JotEntry = {
+  id: string;
+  name: string;
+  icon?: string;
+  createdAt: string;
+  updatedAt: string;
+};
 
 export type Jot = {
   id: string;

@@ -6,7 +6,6 @@ import path from 'path';
 
 import { logger } from './logger';
 
-// todo: consider changing the path to another one like home etc.
 const directoryPath = path.join(app.getPath('userData'), 'jots');
 
 const sanitizePath = (unsafeSuffix: string) =>
@@ -47,24 +46,21 @@ const getJot = async (fileName: string) => {
 const writeJot = async (jot: Jot) => {
   try {
     const index = await getJotFiles();
+    const now = new Date().toISOString();
+    jot.updatedAt = now;
     await writeFile(path.join(directoryPath, `${jot.id}.json`), JSON.stringify(jot), 'utf-8');
     const itemInIndex = index.find((item) => item.id === jot.id);
 
     if (!itemInIndex) {
-      throw new Error('Invalid index.json file!');
+      throw new Error(`The index file doesn't contain the jot ${jot.name} (${jot.id})`);
     }
 
-    const didNameChange = itemInIndex.name !== jot.name;
-    const didIconChange = itemInIndex.icon !== jot.icon;
-
-    if (didNameChange || didIconChange) {
-      const newIndex = index.map((item) => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { items: _, ...jotFields } = jot;
-        return item.id === jot.id ? jotFields : item;
-      });
-      await writeIndex(newIndex);
-    }
+    const newIndex = index.map((item) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { items: _, ...jotFields } = jot;
+      return item.id === jot.id ? jotFields : item;
+    });
+    await writeIndex(newIndex);
   } catch (err) {
     logger.error(err);
   }

@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import type { IconType } from 'react-icons';
 import { FaExchangeAlt } from 'react-icons/fa';
 import { ImEmbed } from 'react-icons/im';
@@ -30,6 +30,7 @@ export type JotItemData = JotItem['data'];
 
 type JotsContext = {
   jots: JotEntry[];
+  recentJots: JotEntry[];
   jotsLoading: boolean;
   getJot?: (id: string) => Promise<Jot | null>;
   addJot?: () => Promise<Jot>;
@@ -58,6 +59,7 @@ export const customJotItems: Record<string, CustomJotItem> = {
 
 const jotsContext = createContext<JotsContext>({
   jots: [],
+  recentJots: [],
   jotsLoading: false,
 });
 
@@ -77,6 +79,19 @@ type JotsProviderProps = {
 export function JotsProvider({ children }: JotsProviderProps) {
   const [jots, setJots] = useState<JotEntry[]>(() => []);
   const [jotsLoading, setLoadingJots] = useState(true);
+
+  const recentJots = useMemo(() => {
+    return jots
+      .slice()
+      .sort((a, b) => {
+        if (!a.updatedAt || !b.updatedAt) {
+          return 0;
+        }
+
+        return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+      })
+      .slice(0, 3);
+  }, [jots]);
 
   async function getJots() {
     setLoadingJots(true);
@@ -107,13 +122,17 @@ export function JotsProvider({ children }: JotsProviderProps) {
   }
 
   async function updateJot(jot: Jot) {
+    const now = new Date().toISOString();
+    jot.updatedAt = now;
     const newJots = jots.map((s) => (s.id === jot.id ? jot : s));
     setJots(newJots);
     window.api.writeJot(jot);
   }
 
   return (
-    <jotsContext.Provider value={{ jots, addJot, getJot, updateJot, removeJot, jotsLoading }}>
+    <jotsContext.Provider
+      value={{ jots, recentJots, addJot, getJot, updateJot, removeJot, jotsLoading }}
+    >
       {children}
     </jotsContext.Provider>
   );
