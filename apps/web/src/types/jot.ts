@@ -10,6 +10,7 @@ export enum JotItemTypes {
   react = 'react',
   kanban = 'kanban',
   todolist = 'todolist',
+  image = 'image',
 }
 
 export type JotItem = {

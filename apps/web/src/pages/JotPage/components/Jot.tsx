@@ -1,6 +1,6 @@
 import '../../../github-markdown.css';
 
-import { Box, useColorMode } from '@chakra-ui/react';
+import { Box, Image, useColorMode } from '@chakra-ui/react';
 import { Excalidraw } from '@excalidraw/excalidraw';
 import { ExcalidrawElement } from '@excalidraw/excalidraw/types/element/types';
 import React, { useEffect, useRef } from 'react';
@@ -116,6 +116,8 @@ const Jot: React.FC<JotProps> = ({ id, type, data, onChange }) => {
       return <KanbanJot data={data as string} onChange={onChange} />;
     case JotItemTypes.todolist:
       return <TodoListJot data={data as string} onChange={onChange} />;
+    case JotItemTypes.image:
+      return <Image src={data as string} />;
     default:
       if (customJotItem) {
         return <Box ref={containerRef} />;

@@ -39,6 +39,7 @@ import {
   useJots,
 } from '@/context/jots';
 import useKey from '@/hooks/useKey';
+import { readFile } from '@/utils/fileReader';
 import generateID from '@/utils/id';
 import logger from '@/utils/logger';
 
@@ -90,7 +91,7 @@ function JotPage() {
     setEditState({ ...editState, data: newData });
   };
 
-  const addNewItem = () => {
+  const addNewItem = (item = newItemState) => {
     if (!jot || !updateJot) return;
     const now = new Date().toISOString();
 
@@ -100,8 +101,8 @@ function JotPage() {
         ...jot.items,
         {
           id: generateID(),
-          type: newItemState.type,
-          data: newItemState.data,
+          type: item.type,
+          data: item.data,
           createdAt: now,
           updatedAt: now,
         },
@@ -220,6 +221,27 @@ function JotPage() {
     updateJot(newJot);
   };
 
+  const onPaste = async (e: React.ClipboardEvent<HTMLDivElement>) => {
+    const clipboardItems = e.clipboardData.items;
+    const items = Array.from(clipboardItems).filter((item) => {
+      // Filter the image items only
+      return item.type.indexOf('image') !== -1;
+    });
+    if (items.length === 0) {
+      return;
+    }
+
+    const item = items[0];
+    // Get the blob of image
+    const blob = item.getAsFile();
+    if (!blob) return;
+    const image = await readFile(blob);
+    addNewItem({
+      type: JotItemTypes.image,
+      data: image,
+    });
+  };
+
   const onJotItemDragStop = useCallback(() => setDragging(null), [setDragging]);
 
   useEffect(() => {
@@ -278,7 +300,12 @@ function JotPage() {
           ))}
         </Reorder.Group>
       </Flex>
-      <Flex mt="2" zIndex={5} onKeyDownCapture={(e) => onSubmitKeyDown(e, onSubmit)}>
+      <Flex
+        mt="2"
+        zIndex={5}
+        onPasteCapture={onPaste}
+        onKeyDownCapture={(e) => onSubmitKeyDown(e, onSubmit)}
+      >
         <Flex
           w="full"
           flexDirection="column"
