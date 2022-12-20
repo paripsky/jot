@@ -6,10 +6,11 @@ import { functionEval } from '@/utils/evaluate';
 import { ConverterJotData } from './ConverterJotEditor';
 
 export type ConverterJotViewerProps = {
-  data: ConverterJotData;
+  data: unknown;
 };
 
-const ConverterJotViewer: React.FC<ConverterJotViewerProps> = ({ data }) => {
+const ConverterJotViewer: React.FC<ConverterJotViewerProps> = ({ data: dataProp }) => {
+  const data = dataProp as ConverterJotData;
   // TODO: add error handling here and in the from + to calls (add error message below)
   const [conversionFunctions] = useState(() => ({
     from: functionEval(data.from),

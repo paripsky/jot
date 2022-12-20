@@ -11,8 +11,8 @@ import {
 import React, { useMemo, useState } from 'react';
 
 export type TodoListJotProps = {
-  data: string;
-  onChange: (newData: string) => void;
+  data: unknown;
+  onChange: (newData: unknown) => void;
 };
 
 export type Todo = {
@@ -43,7 +43,7 @@ const stringify = (items: Todo[]): string => {
 };
 
 const TodoListJot: React.FC<TodoListJotProps> = ({ data, onChange }) => {
-  const list = useMemo(() => parse(data), [data]);
+  const list = useMemo(() => parse(data as string), [data]);
   const [text, setText] = useState('');
 
   const addItem = () => {

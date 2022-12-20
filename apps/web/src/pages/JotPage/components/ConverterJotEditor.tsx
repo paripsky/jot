@@ -17,8 +17,8 @@ export type ConverterJotData = {
 };
 
 export type ConverterJotEditorProps = {
-  data: ConverterJotData;
-  onChange: (newData: ConverterJotData) => void;
+  data: unknown;
+  onChange: (newData: unknown) => void;
 };
 
 export const defaultConverterData = {
@@ -32,7 +32,7 @@ export const defaultConverterData = {
 };
 
 const ConverterJotEditor: React.FC<ConverterJotEditorProps> = ({ data, onChange }) => {
-  const { title, from, to } = data || defaultConverterData;
+  const { title, from, to } = (data as ConverterJotData) || defaultConverterData;
   const { colorMode } = useColorMode();
   const [monacoTheme, setMonacoTheme] = useState('dark');
 

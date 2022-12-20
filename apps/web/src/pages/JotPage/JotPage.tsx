@@ -27,6 +27,7 @@ import { BsMicFill } from 'react-icons/bs';
 import { Navigate, useParams } from 'react-router-dom';
 
 import IconPicker from '@/components/IconPicker';
+import { jotItemTypes } from '@/constants/jotItemTypes';
 import {
   customJotItems,
   defaultJotItemType,
@@ -34,8 +35,6 @@ import {
   Jot as JotType,
   JotItem,
   JotItemData,
-  JotItemTypes,
-  jotItemTypesIcons,
   useJots,
 } from '@/context/jots';
 import useKey from '@/hooks/useKey';
@@ -43,12 +42,11 @@ import { readFile } from '@/utils/fileReader';
 import generateID from '@/utils/id';
 import logger from '@/utils/logger';
 
+import DefaultJotEdit from './components/DefaultJotEdit';
 import { JotListItem } from './components/JotListItem';
 
-const JotEditor = React.lazy(() => import('@/pages/JotPage/components/JotEditor'));
-
 export type TypeAndDataState = {
-  type: JotItemTypes;
+  type: string;
   data: JotItemData;
 };
 
@@ -66,10 +64,7 @@ function JotPage() {
   const { key: newItemKey, resetKey: resetNewItemKey } = useKey();
   const [hovering, setHovering] = useState<JotItem | null>(null);
   const [dragging, setDragging] = useState<JotItem | null>(null);
-  const jotItemTypes = useMemo(
-    () => [...Object.keys(JotItemTypes), ...Object.keys(customJotItems)],
-    [],
-  );
+  const jotItemTypesWithCustom = useMemo(() => ({ ...jotItemTypes, ...customJotItems }), []);
 
   const scrollToBottom = useCallback(() => {
     setTimeout(() => {
@@ -135,13 +130,6 @@ function JotPage() {
     updateJot(newJot);
   };
 
-  const onCancel = () => {
-    setNewItemState({
-      ...newItemState,
-      data: getDefaultValueForType(newItemState.type),
-    });
-  };
-
   const onSubmit = () => {
     if (!newItemState.data) return;
     addNewItem();
@@ -174,7 +162,7 @@ function JotPage() {
     }
   };
 
-  const onTypeChange = (newType: JotItemTypes) => {
+  const onTypeChange = (newType: string) => {
     if (newType === newItemState.type) return;
     setNewItemState({
       ...editState,
@@ -237,7 +225,7 @@ function JotPage() {
     if (!blob) return;
     const image = await readFile(blob);
     addNewItem({
-      type: JotItemTypes.image,
+      type: jotItemTypes.image.id,
       data: image,
     });
   };
@@ -259,6 +247,8 @@ function JotPage() {
   if (jot === undefined) return <Spinner />;
 
   if (jot === null || !jotId) return <Navigate to="/" replace />;
+
+  const JotEditor = jotItemTypes[newItemState.type].edit ?? DefaultJotEdit;
 
   return (
     <Flex flexDirection="column" h="full">
@@ -317,24 +307,29 @@ function JotPage() {
         >
           <Flex>
             <ButtonGroup variant="outline" isAttached>
-              {jotItemTypes.map((jotItemType) => {
-                const Icon = jotItemTypesIcons[jotItemType];
+              {Object.values(jotItemTypesWithCustom).map((jotItemType) => {
+                const Icon = jotItemType.icon;
                 const commonProps = {
                   size: 'xs',
-                  colorScheme: jotItemType === newItemState.type ? 'blue' : undefined,
-                  onClick: () => onTypeChange(jotItemType as JotItemTypes),
+                  colorScheme: jotItemType.id === newItemState.type ? 'blue' : undefined,
+                  onClick: () => onTypeChange(jotItemType.id),
                 };
                 if (Icon) {
                   return (
-                    <Tooltip label={jotItemType} openDelay={500} placement="top" key={jotItemType}>
-                      <IconButton icon={<Icon />} aria-label={jotItemType} {...commonProps} />
+                    <Tooltip
+                      label={jotItemType.name}
+                      openDelay={500}
+                      placement="top"
+                      key={jotItemType.id}
+                    >
+                      <IconButton icon={<Icon />} aria-label={jotItemType.name} {...commonProps} />
                     </Tooltip>
                   );
                 }
 
                 return (
-                  <Button key={jotItemType} {...commonProps}>
-                    {jotItemType}
+                  <Button key={jotItemType.id} {...commonProps}>
+                    {jotItemType.name}
                   </Button>
                 );
               })}
@@ -347,8 +342,6 @@ function JotPage() {
                 data={newItemState.data}
                 type={newItemState.type}
                 onChange={onChange}
-                onSubmit={onSubmit}
-                onCancel={onCancel}
               />
             </Suspense>
           </Box>

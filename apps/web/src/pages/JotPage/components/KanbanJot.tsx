@@ -16,8 +16,8 @@ export type KanbanJotData = Record<
 >;
 
 export type KanbanJotProps = {
-  data: string;
-  onChange: (newData: string) => void;
+  data: unknown;
+  onChange: (newData: unknown) => void;
 };
 
 export function parse(file: string) {
@@ -116,7 +116,7 @@ const onDragEnd = (
 };
 
 const KanbanJot: React.FC<KanbanJotProps> = ({ data, onChange }) => {
-  const columns = useMemo(() => parse(data), [data]);
+  const columns = useMemo(() => parse(data as string), [data]);
 
   return (
     <Flex gap="2" overflow="auto" h="fit-content">

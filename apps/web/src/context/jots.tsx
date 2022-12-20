@@ -1,30 +1,11 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import type { IconType } from 'react-icons';
-import { FaExchangeAlt } from 'react-icons/fa';
-import { ImEmbed } from 'react-icons/im';
-import { SiHtml5, SiJavascript, SiMarkdown, SiReact, SiTypescript } from 'react-icons/si';
-import { VscJson } from 'react-icons/vsc';
 
-import { CustomJotItem, Jot, JotEntry, JotItem, JotItemTypes } from '@/types/jot';
+import { CustomJotItemTypeValue, jotItemTypes } from '@/constants/jotItemTypes';
+import { Jot, JotEntry, JotItem } from '@/types/jot';
 
 export type { Jot, JotEntry, JotItem } from '@/types/jot';
-export { JotItemTypes } from '@/types/jot';
 
-// todo: add option for custom types as plugin
-// use module federation for plugins? babel? webpack/vite in electron? or plain es6 js with modules
-
-export const defaultJotItemType = JotItemTypes.markdown;
-
-export const jotItemTypesIcons: Record<string, IconType> = {
-  javascript: SiJavascript,
-  typescript: SiTypescript,
-  html: SiHtml5,
-  markdown: SiMarkdown,
-  embed: ImEmbed,
-  converter: FaExchangeAlt,
-  json: VscJson,
-  react: SiReact,
-};
+export const defaultJotItemType = jotItemTypes.markdown.id;
 
 export type JotItemData = JotItem['data'];
 
@@ -38,17 +19,14 @@ type JotsContext = {
   updateJot?: (jot: Jot) => Promise<void>;
 };
 
-export const getDefaultValueForType = (type: JotItemTypes) => {
-  switch (type) {
-    case JotItemTypes.excalidraw:
-      return [];
-    default:
-      return '';
-  }
+export const getDefaultValueForType = (type: string) => {
+  return jotItemTypes[type]?.defaultData ?? '';
 };
 
-export const customJotItems: Record<string, CustomJotItem> = {
+export const customJotItems: Record<string, CustomJotItemTypeValue> = {
   custom_1: {
+    id: 'custom_1',
+    name: 'Custom 1',
     icon: () => <>🐲</>,
     view({ el, data }) {
       console.log('viewd', el);

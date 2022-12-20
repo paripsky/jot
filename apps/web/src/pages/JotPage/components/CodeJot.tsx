@@ -7,35 +7,35 @@ import { ReactMarkdownProps } from 'react-markdown/lib/ast-to-react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
-import { JotItemTypes } from '@/context/jots';
-
 export type CodeJotProps = ReactMarkdownProps & {
   inline?: boolean;
   className?: string;
 };
 
 const languageToShortName = {
-  [JotItemTypes.javascript]: 'js',
-  [JotItemTypes.typescript]: 'ts',
-  [JotItemTypes.html]: 'html',
+  javascript: 'js',
+  typescript: 'ts',
+  html: 'html',
 };
 
-const shortNameToLanguage: Record<string, JotItemTypes> = {
-  js: JotItemTypes.javascript,
-  ts: JotItemTypes.typescript,
-  html: JotItemTypes.html,
+const shortNameToLanguage: Record<string, string> = {
+  js: 'javascript',
+  ts: 'typescript',
+  html: 'html',
 };
 
-const runnableJotLanguages = [JotItemTypes.javascript, JotItemTypes.typescript, JotItemTypes.html];
+const runnableJotLanguages = ['js', 'ts', 'html'];
 
 const CodeJot: React.FC<CodeJotProps> = ({ inline, className, children, ...props }) => {
   const embedContainerRef = useRef<HTMLDivElement>(null);
   const embedVMRef = useRef<VM | null>(null);
   const [isEmbedOpen, setIsEmbedOpen] = useState(false);
   const match = /language-(\w+)/.exec(className || '');
-  const matchLang = match?.[1] || JotItemTypes.javascript;
-  const language = (shortNameToLanguage[matchLang] ||
-    matchLang) as keyof typeof languageToShortName;
+  const matchLang = match?.[1] || 'javascript';
+  const language = (shortNameToLanguage[matchLang] || matchLang) as
+    | 'html'
+    | 'javascript'
+    | 'typescript';
   const isValidJotLanguage = runnableJotLanguages.includes(language);
 
   const removeEmbed = () => {

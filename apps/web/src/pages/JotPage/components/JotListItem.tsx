@@ -10,11 +10,12 @@ import { Box, Flex, IconButton, Spinner, Text, Tooltip, useToast } from '@chakra
 import { Reorder, useDragControls } from 'framer-motion';
 import React, { KeyboardEvent, Suspense, useCallback, useEffect, useMemo, useRef } from 'react';
 
-import { JotItem, JotItemData, JotItemTypes } from '@/context/jots';
+import { jotItemTypes } from '@/constants/jotItemTypes';
+import { JotItem, JotItemData } from '@/context/jots';
 import type { TypeAndDataState } from '@/pages/JotPage/JotPage';
 
-const Jot = React.lazy(() => import('@/pages/JotPage/components/Jot'));
-const JotEditor = React.lazy(() => import('@/pages/JotPage/components/JotEditor'));
+import DefaultJotEdit from './DefaultJotEdit';
+import { DefaultJotView } from './DefaultJotView';
 
 export type JotListItemProps = {
   item: JotItem;
@@ -91,6 +92,11 @@ export const JotListItem: React.FC<JotListItemProps> = ({
     }
   }, [isDragging, onDragHandlePointerUp]);
 
+  const Jot = jotItemTypes[type].view ?? DefaultJotView;
+  const JotEditor = jotItemTypes[type].edit ?? DefaultJotEdit;
+
+  if (!Jot) return <></>;
+
   return (
     <Reorder.Item key={id} value={item} dragListener={false} dragControls={controls}>
       <Flex
@@ -120,13 +126,7 @@ export const JotListItem: React.FC<JotListItemProps> = ({
         <Box w="full" onDoubleClick={() => !isEditing && enterEditMode(item)}>
           {isEditing ? (
             <Suspense fallback={<Spinner />}>
-              <JotEditor
-                data={editState?.data}
-                type={type}
-                onChange={onChangeEdit}
-                onSubmit={onSubmitEdit}
-                onCancel={onCancelEdit}
-              />
+              <JotEditor data={editState?.data} type={type} onChange={onChangeEdit} />
             </Suspense>
           ) : (
             <Jot {...item} onChange={(newData: unknown) => editItem({ ...item, data: newData })} />
@@ -191,7 +191,7 @@ export const JotListItem: React.FC<JotListItemProps> = ({
                   aria-label="Copy item"
                   onClick={() => {
                     let { data } = item;
-                    if (item.type === JotItemTypes.excalidraw) {
+                    if (item.type === jotItemTypes.excalidraw.id) {
                       // for excalidraw, copy the elements to the clipboard so that they can be pasted in excalidraw
                       data = {
                         type: 'excalidraw/clipboard',

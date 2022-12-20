@@ -6,10 +6,11 @@ import generateID from '@/utils/id';
 import logger from '@/utils/logger';
 
 export type ReactComponentJotProps = {
-  data: string;
+  data: unknown;
 };
 
-const ReactComponentJot: React.FC<ReactComponentJotProps> = ({ data: code }) => {
+const ReactComponentJot: React.FC<ReactComponentJotProps> = ({ data }) => {
+  const code = data as string;
   const { colorMode } = useColorMode();
   const [, setError] = useState<string | null>(null);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
