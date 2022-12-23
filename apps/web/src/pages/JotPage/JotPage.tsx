@@ -77,8 +77,11 @@ function JotPage() {
   }, []);
 
   const onChange = (newData: JotItemData) => {
-    if (!newItemState || newData === newItemState.data) return;
-    setNewItemState({ ...newItemState, data: newData });
+    setNewItemState((newItemState) => {
+      if (!newItemState || newData === newItemState.data) return newItemState;
+
+      return { ...newItemState, data: newData };
+    });
   };
 
   const onChangeEdit = (newData: JotItemData) => {
@@ -164,9 +167,11 @@ function JotPage() {
 
   const onTypeChange = (newType: string) => {
     if (newType === newItemState.type) return;
+    const defaultValue = getDefaultValueForType(newType);
+    const dataWasString = typeof newItemState.type === 'string';
+    const dataWillBeString = typeof defaultValue === 'string';
     setNewItemState({
-      ...editState,
-      data: getDefaultValueForType(newType),
+      data: dataWasString && dataWillBeString ? newItemState.data : defaultValue,
       type: newType,
     });
   };

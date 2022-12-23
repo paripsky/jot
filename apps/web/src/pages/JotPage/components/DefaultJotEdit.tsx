@@ -11,10 +11,15 @@ export type DefaultJotEditProps = {
   onChange: (data: JotItemData) => void;
 };
 
+const typeToLanguage: Record<string, string> = {
+  react: 'typescript',
+};
+
 function DefaultJotEdit({ data, type, onChange }: DefaultJotEditProps) {
   const { colorMode } = useColorMode();
   const [monacoTheme, setMonacoTheme] = useState('dark');
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
+  const language = typeToLanguage[type] ?? type;
 
   const handleEditorDidMount = (e: editor.IStandaloneCodeEditor) => {
     editorRef.current = e;
@@ -35,7 +40,7 @@ function DefaultJotEdit({ data, type, onChange }: DefaultJotEditProps) {
         lineNumbers: 'off',
         minimap: { enabled: false },
       }}
-      language={type}
+      language={language}
       theme={monacoTheme}
       onChange={codeChanged}
       value={data as string}
