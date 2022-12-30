@@ -24,13 +24,14 @@ import { BsSearch } from 'react-icons/bs';
 import { CgFileAdd } from 'react-icons/cg';
 import { FiFolder, FiSettings } from 'react-icons/fi';
 import { MdNotes, MdStorefront } from 'react-icons/md';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import { useLayout } from '@/store/layout';
 import { useSettings } from '@/store/settings';
 
 import { useJots } from '../context/jots';
 import { getAvatarUrl } from '../utils/avatar';
+import { CreateNewJotModal } from './CreateNewJotModal';
 import Link from './Link';
 import LinkButton from './LinkButton';
 import { SidebarButton } from './SidebarButton';
@@ -39,24 +40,22 @@ const Sidebar: React.FC = () => {
   const location = useLocation();
   const [searchText, setSearchText] = useState('');
   const searchRef = useRef<HTMLInputElement>(null);
-  const { jots, jotsLoading, addJot } = useJots();
+  const { jots, jotsLoading } = useJots();
   const { isSidebarOpen, toggleSidebar, isSidebarFloating } = useLayout();
   const settings = useSettings();
-  const navigate = useNavigate();
   const { isOpen: isJotMenuOpen, onToggle: toggleJotMenu } = useDisclosure({ defaultIsOpen: true });
   const jotMenuBg = useColorModeValue('neutral.200', 'neutral.800');
+  const {
+    isOpen: isCreateNewJotModalOpen,
+    onOpen: onOpenCreateNewJotModal,
+    onClose: onCloseCreateNewJotModal,
+  } = useDisclosure();
 
   const matchingJots = useMemo(() => {
     if (!searchText) return jots;
 
     return jots.filter((jot) => jot.name.toLowerCase().includes(searchText.toLowerCase()));
   }, [searchText, jots]);
-
-  const addNewJot = async () => {
-    if (!addJot) return;
-    const jot = await addJot();
-    navigate(`/jot/${jot.id}`);
-  };
 
   const floatingProps = useMemo(() => {
     if (!isSidebarFloating) return {};
@@ -84,7 +83,7 @@ const Sidebar: React.FC = () => {
             onClick={toggleJotMenu}
             isActive={isJotMenuOpen}
           />
-          <SidebarButton title="Create Jot" icon={CgFileAdd} onClick={addNewJot} />
+          <SidebarButton title="Create Jot" icon={CgFileAdd} onClick={onOpenCreateNewJotModal} />
           <SidebarButton title="Marketplace" to="/marketplace" icon={MdStorefront} />
           <SidebarButton title="Docs" to="/docs" icon={MdNotes} />
 
@@ -167,17 +166,20 @@ const Sidebar: React.FC = () => {
   }
 
   return (
-    <Flex
-      as="aside"
-      aria-hidden={!isSidebarOpen}
-      role={isSidebarOpen ? 'dialog' : 'none'}
-      tabIndex={isSidebarOpen ? 0 : -1}
-      flexDir="column"
-      borderRightWidth={1}
-      {...floatingProps}
-    >
-      {sidebarBody}
-    </Flex>
+    <>
+      <CreateNewJotModal isOpen={isCreateNewJotModalOpen} onClose={onCloseCreateNewJotModal} />
+      <Flex
+        as="aside"
+        aria-hidden={!isSidebarOpen}
+        role={isSidebarOpen ? 'dialog' : 'none'}
+        tabIndex={isSidebarOpen ? 0 : -1}
+        flexDir="column"
+        borderRightWidth={1}
+        {...floatingProps}
+      >
+        {sidebarBody}
+      </Flex>
+    </>
   );
 };
 

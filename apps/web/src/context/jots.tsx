@@ -9,12 +9,17 @@ export const defaultJotItemType = jotItemTypes.markdown.id;
 
 export type JotItemData = JotItem['data'];
 
+export type AddJotProps = {
+  name?: string;
+  icon?: string;
+};
+
 type JotsContext = {
   jots: JotEntry[];
   recentJots: JotEntry[];
   jotsLoading: boolean;
   getJot?: (id: string) => Promise<Jot | null>;
-  addJot?: () => Promise<Jot>;
+  addJot?: (p: AddJotProps) => Promise<Jot>;
   removeJot?: (id: string) => Promise<void>;
   updateJot?: (jot: Jot) => Promise<void>;
 };
@@ -86,8 +91,8 @@ export function JotsProvider({ children }: JotsProviderProps) {
     getJots();
   }, []);
 
-  async function addJot() {
-    const jot = await window.api.createJot('New Jot');
+  async function addJot({ name = 'New Jot', icon = '📝' }: AddJotProps) {
+    const jot = await window.api.createJot({ name, icon });
     const jotEntries = await window.api.getJotFiles();
     setJots(jotEntries);
 
