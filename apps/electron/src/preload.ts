@@ -46,10 +46,10 @@ const api = {
 
     return result;
   },
-  async createJot(name: string) {
+  async createJot({ name, icon }: { name: string; icon: string }) {
     const jot = await new Promise((resolve) => {
       ipcRenderer.once('createJot', (_, data) => resolve(data));
-      ipcRenderer.send('createJot', name);
+      ipcRenderer.send('createJot', { name, icon });
     });
 
     return jot as Jot;

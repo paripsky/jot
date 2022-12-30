@@ -66,14 +66,14 @@ const writeJot = async (jot: Jot) => {
   }
 };
 
-const createJot = async (name: string) => {
+const createJot = async ({ name, icon }: { name: string, icon: string }) => {
   const index = await getJotFiles();
   const now = new Date().toISOString();
   const newJot: Jot = {
     id: generateID(),
     name,
     items: [],
-    icon: '📝',
+    icon,
     createdAt: now,
     updatedAt: now,
   };
@@ -113,8 +113,8 @@ ipcMain.on('writeJot', async (event, jot: Jot) => {
   event.reply('writeJot', true);
 });
 
-ipcMain.on('createJot', async (event, name: string) => {
-  const jot = await createJot(name);
+ipcMain.on('createJot', async (event, { name, icon }) => {
+  const jot = await createJot({ name, icon });
   event.reply('createJot', jot);
 });
 
