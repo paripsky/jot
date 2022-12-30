@@ -56,13 +56,20 @@ const ReactComponentSandbox: React.FC = () => {
     [iframeID],
   );
 
+  const replaceReact = (code: string) => {
+    return code.replace("import React from 'react'", '');
+  };
+
   const fetchComponent = useCallback(
     async (code: string) => {
       if (!iframeID) return;
       try {
         setLoading(true);
         // fetch script and babel transform
-        const transformedCode = (transform(code).code || '').replaceAll('/*#__PURE__*/', '');
+        const transformedCode = (transform(replaceReact(code)).code || '').replaceAll(
+          '/*#__PURE__*/',
+          '',
+        );
         const dataUri = `data:text/javascript;charset=utf-8,${transformedCode}`;
         const module = await tryEval(`import(\`${dataUri}\`)`);
         if (!module.default) {
