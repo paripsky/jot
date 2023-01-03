@@ -125,9 +125,11 @@ export const JotListItem: React.FC<JotListItemProps> = ({
         </Box>
         <Box w="full" onDoubleClick={() => !isEditing && enterEditMode(item)}>
           {isEditing ? (
-            <Suspense fallback={<Spinner />}>
-              <JotEditor data={editState?.data} type={type} onChange={onChangeEdit} />
-            </Suspense>
+            <Box h="200">
+              <Suspense fallback={<Spinner />}>
+                <JotEditor data={editState?.data} type={type} onChange={onChangeEdit} />
+              </Suspense>
+            </Box>
           ) : (
             <Jot {...item} onChange={(newData: unknown) => editItem({ ...item, data: newData })} />
           )}

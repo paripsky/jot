@@ -9,13 +9,14 @@ export type DefaultJotEditProps = {
   data: JotItemData;
   type: string;
   onChange: (data: JotItemData) => void;
+  height?: number;
 };
 
 const typeToLanguage: Record<string, string> = {
   react: 'typescript',
 };
 
-function DefaultJotEdit({ data, type, onChange }: DefaultJotEditProps) {
+function DefaultJotEdit({ data, type, onChange, height }: DefaultJotEditProps) {
   const { colorMode } = useColorMode();
   const [monacoTheme, setMonacoTheme] = useState('dark');
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
@@ -35,7 +36,7 @@ function DefaultJotEdit({ data, type, onChange }: DefaultJotEditProps) {
 
   return (
     <Editor
-      height="150px"
+      height={height}
       options={{
         lineNumbers: 'off',
         minimap: { enabled: false },

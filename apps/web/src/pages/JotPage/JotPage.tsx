@@ -24,6 +24,7 @@ import React, {
   useState,
 } from 'react';
 import { BsMicFill } from 'react-icons/bs';
+import { FiSend } from 'react-icons/fi';
 import { Navigate, useParams } from 'react-router-dom';
 
 import IconPicker from '@/components/IconPicker';
@@ -38,6 +39,7 @@ import {
   useJots,
 } from '@/context/jots';
 import useKey from '@/hooks/useKey';
+import { useResize } from '@/hooks/useResize';
 import { readFile } from '@/utils/fileReader';
 import generateID from '@/utils/id';
 import logger from '@/utils/logger';
@@ -65,6 +67,13 @@ function JotPage() {
   const [hovering, setHovering] = useState<JotItem | null>(null);
   const [dragging, setDragging] = useState<JotItem | null>(null);
   const jotItemTypesWithCustom = useMemo(() => ({ ...jotItemTypes, ...customJotItems }), []);
+  const [editorHeight, setEditorHeight] = useState(250);
+  const resizer = useRef<HTMLDivElement>(null);
+  const { handleProps } = useResize({
+    size: editorHeight,
+    onResize: setEditorHeight,
+    handle: resizer.current ?? undefined,
+  });
 
   const scrollToBottom = useCallback(() => {
     setTimeout(() => {
@@ -295,8 +304,8 @@ function JotPage() {
           ))}
         </Reorder.Group>
       </Flex>
+      <Box mt="2" ref={resizer} h="1" {...handleProps}></Box>
       <Flex
-        mt="2"
         zIndex={5}
         onPasteCapture={onPaste}
         onKeyDownCapture={(e) => onSubmitKeyDown(e, onSubmit)}
@@ -340,9 +349,10 @@ function JotPage() {
               })}
             </ButtonGroup>
           </Flex>
-          <Box mt="2" w="full">
+          <Box mt="2" w="full" minHeight={editorHeight}>
             <Suspense fallback={<Spinner />}>
               <JotEditor
+                height={editorHeight}
                 key={newItemKey}
                 data={newItemState.data}
                 type={newItemState.type}
@@ -355,9 +365,12 @@ function JotPage() {
             <Text fontSize="xs" alignSelf="center" color="neutral.400">
               Ctrl + Enter
             </Text>
-            <Button size="xs" onClick={onSubmit} disabled={!newItemState.data}>
-              Submit
-            </Button>
+            <IconButton
+              size="xs"
+              icon={<FiSend />}
+              disabled={!newItemState.data}
+              aria-label="Submit"
+            />
           </Flex>
         </Flex>
       </Flex>
