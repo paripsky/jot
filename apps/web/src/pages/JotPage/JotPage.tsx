@@ -168,7 +168,7 @@ function JotPage() {
   const onTypeChange = (newType: string) => {
     if (newType === newItemState.type) return;
     const defaultValue = getDefaultValueForType(newType);
-    const dataWasString = typeof newItemState.type === 'string';
+    const dataWasString = typeof newItemState.data === 'string';
     const dataWillBeString = typeof defaultValue === 'string';
     setNewItemState({
       data: dataWasString && dataWillBeString ? newItemState.data : defaultValue,
