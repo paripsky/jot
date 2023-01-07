@@ -8,7 +8,7 @@ import {
   Text,
   useColorModeValue,
   useDisclosure,
-} from '@chakra-ui/react';
+} from '@jot/ui';
 import React, { useEffect, useRef } from 'react';
 
 import { useJots } from '@/context/jots';
@@ -18,7 +18,7 @@ import { searchableRoutes } from '@/routes';
 import LinkButton from './LinkButton';
 import MenuList from './MenuList';
 
-const Spotlight: React.FC = () => {
+function Spotlight() {
   const bg = useColorModeValue('neutral.300', 'neutral.900');
   const { isOpen, onClose, onOpen } = useDisclosure();
   const ref = useRef(null);
@@ -73,6 +73,6 @@ const Spotlight: React.FC = () => {
       </ModalContent>
     </Modal>
   );
-};
+}
 
 export default Spotlight;

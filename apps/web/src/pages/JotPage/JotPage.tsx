@@ -12,7 +12,8 @@ import {
   Spinner,
   Text,
   Tooltip,
-} from '@chakra-ui/react';
+} from '@jot/ui';
+import { EmojiPicker } from '@jot/ui';
 import { Reorder } from 'framer-motion';
 import React, {
   KeyboardEvent,
@@ -27,7 +28,6 @@ import { BsMicFill } from 'react-icons/bs';
 import { FiSend } from 'react-icons/fi';
 import { Navigate, useParams } from 'react-router-dom';
 
-import IconPicker from '@/components/IconPicker';
 import { jotItemTypes } from '@/constants/jotItemTypes';
 import {
   customJotItems,
@@ -67,7 +67,7 @@ function JotPage() {
   const [hovering, setHovering] = useState<JotItem | null>(null);
   const [dragging, setDragging] = useState<JotItem | null>(null);
   const jotItemTypesWithCustom = useMemo(() => ({ ...jotItemTypes, ...customJotItems }), []);
-  const [editorHeight, setEditorHeight] = useState(250);
+  const [editorHeight, setEditorHeight] = useState(200);
   const resizer = useRef<HTMLDivElement>(null);
   const { handleProps } = useResize({
     size: editorHeight,
@@ -269,7 +269,7 @@ function JotPage() {
       <Flex mb="2">
         <Heading as="h5" display="flex" alignItems="center" size="sm" w="full">
           {jot.icon && (
-            <IconPicker value={jot.icon} onChange={updateJotIcon} placement="bottom-end" />
+            <EmojiPicker value={jot.icon} onChange={updateJotIcon} placement="bottom-end" />
           )}
           <Editable defaultValue={jot.name} key={jot.id} onSubmit={updateJotName}>
             <EditablePreview />

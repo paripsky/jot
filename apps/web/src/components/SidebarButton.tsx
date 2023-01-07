@@ -1,4 +1,4 @@
-import { Icon, IconButton, IconButtonProps } from '@chakra-ui/react';
+import { Icon, IconButton, IconButtonProps } from '@jot/ui';
 import type { IconType } from 'react-icons';
 
 import Link from './Link';
@@ -10,13 +10,7 @@ type SidebarButtonProps = {
   isActive?: boolean;
 } & Omit<IconButtonProps, 'aria-label' | 'icon'>;
 
-export const SidebarButton: React.FC<SidebarButtonProps> = ({
-  to,
-  icon,
-  title,
-  isActive,
-  ...props
-}) => {
+export function SidebarButton({ to, icon, title, isActive, ...props }: SidebarButtonProps) {
   const bg = isActive ? 'neutral.100' : 'neutral.500';
   const button = (
     <IconButton
@@ -35,4 +29,4 @@ export const SidebarButton: React.FC<SidebarButtonProps> = ({
   );
 
   return to ? <Link to={to}>{button}</Link> : button;
-};
+}

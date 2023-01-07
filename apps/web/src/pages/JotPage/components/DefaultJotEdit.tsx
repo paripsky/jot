@@ -1,4 +1,4 @@
-import { useColorMode } from '@chakra-ui/react';
+import { useColorMode } from '@jot/ui';
 import { editor } from 'monaco-editor';
 import { useEffect, useRef, useState } from 'react';
 

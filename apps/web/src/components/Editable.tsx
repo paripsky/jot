@@ -1,5 +1,5 @@
 import { CheckIcon, CloseIcon, EditIcon } from '@chakra-ui/icons';
-import { Box, ButtonGroup, Collapse, Flex, IconButton } from '@chakra-ui/react';
+import { Box, ButtonGroup, Collapse, Flex, IconButton } from '@jot/ui';
 import React from 'react';
 
 export type EditableProps = {
@@ -12,21 +12,6 @@ export type EditableProps = {
 };
 
 function Editable({ children, onSave, editForm, onReset, editMode, setEditMode }: EditableProps) {
-  //   if (!editMode) {
-  //     return (
-  //       <Flex>
-  //         {children}
-  //         <IconButton
-  //           ml="4"
-  //           size="sm"
-  //           aria-label="Edit Widget"
-  //           icon={<EditIcon />}
-  //           onClick={() => setEditMode(true)}
-  //         />
-  //       </Flex>
-  //     );
-  //   }
-
   return (
     <Box position="relative" border={editMode ? '1px solid' : 'inherit'}>
       <Collapse in={editMode} unmountOnExit>
@@ -53,15 +38,7 @@ function Editable({ children, onSave, editForm, onReset, editMode, setEditMode }
         </Box>
       </Collapse>
       {editMode ? (
-        <Box position="relative">
-          {children}
-          {/* <Box
-            position="absolute"
-            top="0"
-            w="full"
-            h="full"
-            backdropFilter="blur(10px)"></Box> */}
-        </Box>
+        <Box position="relative">{children}</Box>
       ) : (
         <Flex>
           {children}

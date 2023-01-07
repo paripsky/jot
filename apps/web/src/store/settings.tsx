@@ -1,6 +1,6 @@
-import { AvatarType } from '@/utils/avatar';
+import { createStore } from '@jot/ui';
 
-import { createStore } from './store';
+import { AvatarType } from '@/utils/avatar';
 
 const initialState = {
   nickname: 'Jotter',

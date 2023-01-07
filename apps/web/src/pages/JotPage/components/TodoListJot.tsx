@@ -7,7 +7,7 @@ import {
   InputRightElement,
   List,
   ListItem,
-} from '@chakra-ui/react';
+} from '@jot/ui';
 import React, { useMemo, useState } from 'react';
 
 export type TodoListJotProps = {

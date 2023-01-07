@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react';
+import { Box } from '@jot/ui';
 import { useEffect, useRef } from 'react';
 
 import { customJotItems } from '@/context/jots';

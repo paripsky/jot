@@ -1,4 +1,4 @@
-import { Spinner } from '@chakra-ui/react';
+import { Spinner } from '@jot/ui';
 import React, { Suspense } from 'react';
 
 const JotPage = React.lazy(() => import('./pages/JotPage'));

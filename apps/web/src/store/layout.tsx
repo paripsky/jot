@@ -1,6 +1,5 @@
-import { useBreakpointValue } from '@chakra-ui/react';
-
-import { createStore } from './store';
+import { useBreakpointValue } from '@jot/ui';
+import { createStore } from '@jot/ui';
 
 const initialState = {
   isSidebarOpen: false,

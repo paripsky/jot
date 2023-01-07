@@ -1,4 +1,4 @@
-import { Stack, StackProps } from '@chakra-ui/react';
+import { Stack, StackProps } from '@jot/ui';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 export type MenuListProps = Omit<StackProps, 'children'> & {
@@ -10,12 +10,7 @@ export type MenuListProps = Omit<StackProps, 'children'> & {
   };
 };
 
-const MenuList: React.FC<MenuListProps> = ({
-  children,
-  onSelect,
-  offset = { x: 0, y: 0 },
-  ...props
-}) => {
+function MenuList({ children, onSelect, offset = { x: 0, y: 0 }, ...props }: MenuListProps) {
   const menuRef = useRef<HTMLDivElement>(null);
   const [focusedIndex, setFocusedIndex] = useState(0);
 
@@ -72,6 +67,6 @@ const MenuList: React.FC<MenuListProps> = ({
       {children({ focusedIndex })}
     </Stack>
   );
-};
+}
 
 export default MenuList;

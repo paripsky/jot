@@ -18,8 +18,8 @@ import {
   Text,
   useColorModeValue,
   useDisclosure,
-} from '@chakra-ui/react';
-import React, { useMemo, useRef, useState } from 'react';
+} from '@jot/ui';
+import { useMemo, useRef, useState } from 'react';
 import { BsSearch } from 'react-icons/bs';
 import { CgFileAdd } from 'react-icons/cg';
 import { FiFolder, FiSettings } from 'react-icons/fi';
@@ -36,7 +36,7 @@ import Link from './Link';
 import LinkButton from './LinkButton';
 import { SidebarButton } from './SidebarButton';
 
-const Sidebar: React.FC = () => {
+function Sidebar() {
   const location = useLocation();
   const [searchText, setSearchText] = useState('');
   const searchRef = useRef<HTMLInputElement>(null);
@@ -181,6 +181,6 @@ const Sidebar: React.FC = () => {
       </Flex>
     </>
   );
-};
+}
 
 export default Sidebar;

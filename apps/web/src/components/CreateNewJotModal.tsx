@@ -1,5 +1,6 @@
 import {
   Button,
+  EmojiPicker,
   Flex,
   FormControl,
   FormLabel,
@@ -11,13 +12,11 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-} from '@chakra-ui/react';
-import React, { useRef, useState } from 'react';
+} from '@jot/ui';
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useJots } from '@/context/jots';
-
-import IconPicker from './IconPicker';
 
 export type CreateNewJotModalProps = {
   isOpen: boolean;
@@ -29,7 +28,7 @@ const defaultProps = {
   icon: '📝',
 };
 
-export const CreateNewJotModal: React.FC<CreateNewJotModalProps> = ({ isOpen, onClose }) => {
+export function CreateNewJotModal({ isOpen, onClose }: CreateNewJotModalProps) {
   const navigate = useNavigate();
   const [name, setName] = useState(defaultProps.name);
   const [icon, setIcon] = useState(defaultProps.icon);
@@ -58,7 +57,7 @@ export const CreateNewJotModal: React.FC<CreateNewJotModalProps> = ({ isOpen, on
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
-          <IconPicker value={icon} onChange={(newIcon) => setIcon(newIcon)} /> Create a new Jot
+          <EmojiPicker value={icon} onChange={(newIcon) => setIcon(newIcon)} /> Create a new Jot
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody pb={6}>
@@ -84,4 +83,4 @@ export const CreateNewJotModal: React.FC<CreateNewJotModalProps> = ({ isOpen, on
       </ModalContent>
     </Modal>
   );
-};
+}

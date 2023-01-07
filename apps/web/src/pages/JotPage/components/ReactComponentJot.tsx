@@ -1,4 +1,4 @@
-import { Box, useColorMode } from '@chakra-ui/react';
+import { Box, useColorMode } from '@jot/ui';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import debounce from '@/utils/debounce';

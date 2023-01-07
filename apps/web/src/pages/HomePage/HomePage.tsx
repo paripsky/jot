@@ -1,4 +1,4 @@
-import { Button, Flex, Heading, Kbd, Text, useDisclosure } from '@chakra-ui/react';
+import { Button, Flex, Heading, Kbd, Text, useDisclosure } from '@jot/ui';
 import React from 'react';
 
 import { CreateNewJotModal } from '@/components/CreateNewJotModal';

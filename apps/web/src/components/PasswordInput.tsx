@@ -11,7 +11,7 @@ import {
   useColorModeValue as mode,
   useDisclosure,
   useMergeRefs,
-} from '@chakra-ui/react';
+} from '@jot/ui';
 import * as React from 'react';
 import { HiEye, HiEyeOff } from 'react-icons/hi';
 

@@ -1,4 +1,4 @@
-import { Image } from '@chakra-ui/react';
+import { Image } from '@jot/ui';
 
 type ImageJotViewProps = {
   data: unknown;

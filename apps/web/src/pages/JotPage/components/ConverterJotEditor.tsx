@@ -1,11 +1,4 @@
-import {
-  Flex,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Input,
-  useColorMode,
-} from '@chakra-ui/react';
+import { Flex, FormControl, FormErrorMessage, FormLabel, Input, useColorMode } from '@jot/ui';
 import React, { useEffect, useState } from 'react';
 
 import Editor from '../../../components/CodeEditor';

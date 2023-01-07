@@ -1,5 +1,5 @@
 import { HamburgerIcon } from '@chakra-ui/icons';
-import { Flex, Icon, IconButton, useColorMode } from '@chakra-ui/react';
+import { Flex, Icon, IconButton, useColorMode } from '@jot/ui';
 import { Outlet } from 'react-router-dom';
 
 import { useLayout } from '@/store/layout';

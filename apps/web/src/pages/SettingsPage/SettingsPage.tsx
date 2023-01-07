@@ -13,7 +13,7 @@ import {
   Text,
   useColorMode,
   useColorModeValue,
-} from '@chakra-ui/react';
+} from '@jot/ui';
 import React from 'react';
 
 import { useSettings } from '@/store/settings';

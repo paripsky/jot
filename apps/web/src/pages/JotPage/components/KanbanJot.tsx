@@ -1,5 +1,5 @@
-import { Box, Editable, EditableInput, EditablePreview, Flex } from '@chakra-ui/react';
 import { DragDropContext, Draggable, Droppable, DropResult } from '@hello-pangea/dnd';
+import { Box, Editable, EditableInput, EditablePreview, Flex } from '@jot/ui';
 import React, { useMemo } from 'react';
 
 export type Todo = {

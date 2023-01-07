@@ -1,4 +1,4 @@
-import { Divider } from '@chakra-ui/react';
+import { Divider } from '@jot/ui';
 
 function Separator() {
   return <Divider mx="5" />;

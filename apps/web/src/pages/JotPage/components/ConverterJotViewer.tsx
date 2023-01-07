@@ -1,4 +1,4 @@
-import { Flex, Heading, Textarea } from '@chakra-ui/react';
+import { Flex, Heading, Textarea } from '@jot/ui';
 import React, { useState } from 'react';
 
 import { functionEval } from '@/utils/evaluate';

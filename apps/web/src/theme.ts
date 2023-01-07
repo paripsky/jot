@@ -1,6 +1,6 @@
-import { ColorHues, extendTheme, StyleFunctionProps } from '@chakra-ui/react';
 import { theme as defaultTheme } from '@chakra-ui/theme';
 import { mode } from '@chakra-ui/theme-tools';
+import { ColorHues, extendTheme, StyleFunctionProps } from '@jot/ui';
 
 import { getSearchParam } from './utils/getSearchParam';
 

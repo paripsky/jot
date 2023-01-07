@@ -6,7 +6,7 @@ import {
   DragHandleIcon,
   EditIcon,
 } from '@chakra-ui/icons';
-import { Box, Flex, IconButton, Spinner, Text, Tooltip, useToast } from '@chakra-ui/react';
+import { Box, Flex, IconButton, Spinner, Text, Tooltip, useToast } from '@jot/ui';
 import { Reorder, useDragControls } from 'framer-motion';
 import React, { KeyboardEvent, Suspense, useCallback, useEffect, useMemo, useRef } from 'react';
 

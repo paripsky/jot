@@ -1,6 +1,6 @@
-import { Box, useColorMode } from '@chakra-ui/react';
 import { Excalidraw } from '@excalidraw/excalidraw';
 import { ExcalidrawElement } from '@excalidraw/excalidraw/types/element/types';
+import { Box, useColorMode } from '@jot/ui';
 
 type ExcalidrawJotViewProps = {
   id: string;

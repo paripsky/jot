@@ -1,9 +1,8 @@
-import { Box, Divider, Flex, FlexProps, Text, useColorModeValue } from '@chakra-ui/react';
-import React from 'react';
+import { Box, Divider, Flex, FlexProps, Text, useColorModeValue } from '@jot/ui';
 
 type DividerWithTextProps = FlexProps;
 
-const DividerWithText: React.FC<DividerWithTextProps> = (props) => {
+function DividerWithText(props: DividerWithTextProps) {
   const { children, ...flexProps } = props;
 
   return (
@@ -24,6 +23,6 @@ const DividerWithText: React.FC<DividerWithTextProps> = (props) => {
       </Box>
     </Flex>
   );
-};
+}
 
 export default DividerWithText;

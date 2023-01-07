@@ -1,7 +1,7 @@
-import { Flex, useColorMode } from '@chakra-ui/react';
 import { Excalidraw } from '@excalidraw/excalidraw';
 import { ExcalidrawElement } from '@excalidraw/excalidraw/types/element/types';
 import { ExcalidrawImperativeAPI } from '@excalidraw/excalidraw/types/types';
+import { Flex, useColorMode } from '@jot/ui';
 import { useCallback, useMemo, useRef } from 'react';
 
 import { JotItemData } from '@/context/jots';

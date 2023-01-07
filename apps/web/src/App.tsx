@@ -1,6 +1,6 @@
 import './App.css';
 
-import { ChakraProvider, ColorModeScript, Spinner } from '@chakra-ui/react';
+import { ChakraProvider, ColorModeScript, Spinner } from '@jot/ui';
 import React, { Suspense, useMemo } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { BrowserRouter } from 'react-router-dom';

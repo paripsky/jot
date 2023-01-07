@@ -7,7 +7,6 @@ import {
   PopoverTrigger,
   SimpleGrid,
 } from '@chakra-ui/react';
-import React from 'react';
 
 import { range } from '@/utils/array';
 
@@ -15,19 +14,18 @@ const emojiRanges = [
   [128513, 128591],
   [9986, 10160],
   [128640, 128704],
-  // [9410, 127569],
 ];
 
 const emojis = emojiRanges.flatMap(([from, to]) =>
   range(from, to).flatMap((emoji) => String.fromCodePoint(emoji)),
 );
 
-export type IconPickerProps = {
+export type EmojiPickerProps = {
   value: string;
   onChange: (newValue: string) => void;
 } & PopoverProps;
 
-export const IconPicker: React.FC<IconPickerProps> = ({ value, onChange, ...props }) => {
+export function EmojiPicker({ value, onChange, ...props }: EmojiPickerProps) {
   return (
     <Popover isLazy {...props}>
       {({ onClose }: { onClose: () => void }) => (
@@ -65,6 +63,4 @@ export const IconPicker: React.FC<IconPickerProps> = ({ value, onChange, ...prop
       )}
     </Popover>
   );
-};
-
-export default IconPicker;
+}

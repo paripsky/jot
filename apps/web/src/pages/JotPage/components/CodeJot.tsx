@@ -1,7 +1,7 @@
 import { ExternalLinkIcon } from '@chakra-ui/icons';
-import { Box, Flex, IconButton } from '@chakra-ui/react';
+import { Box, Flex, IconButton } from '@jot/ui';
 import sdk, { VM } from '@stackblitz/sdk';
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { FaPlay, FaTimes } from 'react-icons/fa';
 import { ReactMarkdownProps } from 'react-markdown/lib/ast-to-react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -26,7 +26,7 @@ const shortNameToLanguage: Record<string, string> = {
 
 const runnableJotLanguages = ['js', 'ts', 'html'];
 
-const CodeJot: React.FC<CodeJotProps> = ({ inline, className, children, ...props }) => {
+function CodeJot({ inline, className, children, ...props }: CodeJotProps) {
   const embedContainerRef = useRef<HTMLDivElement>(null);
   const embedVMRef = useRef<VM | null>(null);
   const [isEmbedOpen, setIsEmbedOpen] = useState(false);
@@ -127,6 +127,6 @@ const CodeJot: React.FC<CodeJotProps> = ({ inline, className, children, ...props
       {children}
     </code>
   );
-};
+}
 
 export default CodeJot;

@@ -1,9 +1,8 @@
-import { Box, BoxProps, useColorModeValue } from '@chakra-ui/react';
-import React from 'react';
+import { Box, BoxProps, useColorModeValue } from '@jot/ui';
 
 type CardProps = BoxProps;
 
-const Card: React.FC<CardProps> = (props) => {
+export function Card(props: CardProps) {
   return (
     <Box
       bg={useColorModeValue('neutral.100', 'neutral.700')}
@@ -14,6 +13,6 @@ const Card: React.FC<CardProps> = (props) => {
       {...props}
     />
   );
-};
+}
 
 export default Card;

@@ -1,4 +1,4 @@
-import { Box, Button, Spinner } from '@chakra-ui/react';
+import { Box, Button, Spinner } from '@jot/ui';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import ErrorBoundary from '@/components/ErrorBoundary';
