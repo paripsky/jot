@@ -92,8 +92,8 @@ export const JotListItem: React.FC<JotListItemProps> = ({
     }
   }, [isDragging, onDragHandlePointerUp]);
 
-  const Jot = jotItemTypes[type].view ?? DefaultJotView;
-  const JotEditor = jotItemTypes[type].edit ?? DefaultJotEdit;
+  const Jot = jotItemTypes[type]?.view ?? DefaultJotView;
+  const JotEditor = jotItemTypes[type]?.edit ?? DefaultJotEdit;
 
   if (!Jot) return <></>;
 
